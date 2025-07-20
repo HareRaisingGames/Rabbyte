@@ -1,0 +1,17 @@
+{
+  "name": "com.hareraising.rabbyte",
+  "version": "0.0.1",
+  "displayName": "Rabbyte",
+  "description": "A Parser and Serializer for the custom SBD dialogue files",
+  "unity": "2022.3",
+  "documentationUrl": "https://github.com/HareRaisingStudios/Rabbyte",
+  "keywords": [
+    "file-extension",
+    "rhythm",
+    "starborn"
+  ],
+  "author": {
+    "name": "Dancetrap",
+    "url": "https://github.com/HareRaisingStudios"
+  }
+}
