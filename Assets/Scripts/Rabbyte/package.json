@@ -1,11 +1,11 @@
 {
-  "name": "com.hareraisingstudios.rabbyte",
+  "name": "com.hareraisinggames.rabbyte",
   "version": "0.0.1",
   "displayName": "Rabbyte",
   "description": "A Parser and Serializer for the custom SBD dialogue files",
   "unity": "2020.1",
-  "documentationUrl": "https://github.com/HareRaisingStudios/Rabbyte",
-  "changelogUrl": "https://github.com/HareRaisingStudios/Rabbyte/commits/main",
+  "documentationUrl": "https://github.com/HareRaisingGames/Rabbyte",
+  "changelogUrl": "https://github.com/HareRaisingGames/Rabbyte/commits/main",
   "keywords": [
     "file-extension",
     "rhythm",
@@ -17,6 +17,6 @@
   "author": {
     "name": "Dancetrap",
     "email": "unforseeable2.0@gmail.com",
-    "url": "https://github.com/HareRaisingStudios"
+    "url": "https://github.com/HareRaisingGames"
   }
 }
