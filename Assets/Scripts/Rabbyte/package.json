@@ -1,5 +1,5 @@
 {
-  "name": "com.hareraising.rabbyte",
+  "name": "com.hareraisingstudios.rabbyte",
   "version": "0.0.1",
   "displayName": "Rabbyte",
   "description": "A Parser and Serializer for the custom SBD dialogue files",
