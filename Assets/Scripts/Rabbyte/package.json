@@ -1,6 +1,6 @@
 {
   "name": "com.hareraisinggames.rabbyte",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "displayName": "Rabbyte",
   "description": "A Parser and Serializer for the custom SBD dialogue files",
   "unity": "2020.1",
@@ -12,7 +12,7 @@
     "starborn"
   ],
   "dependencies": {
-    
+    "com.unity.nuget.newtonsoft-json": "3.2.1"
   },
   "author": {
     "name": "Dancetrap",
