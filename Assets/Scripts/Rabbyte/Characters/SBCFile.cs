@@ -19,9 +19,14 @@ namespace Rabbyte
             }
         }
 
-        public void addExpression()
+        public SBCFile(string name = "")
         {
-            Emotion emotion = new Emotion();
+            filename = name;
+        }
+
+        public void addExpression(string expression = "", byte[] sprite = null, float scale = 1, int x = 0, int y = 0)
+        {
+            Emotion emotion = new Emotion(expression, sprite, scale, x, y);
             expressions.Add(emotion);
             _curExp = expressions.IndexOf(emotion);
         }
@@ -39,12 +44,14 @@ public struct Emotion
     public byte[] sprite;
     public float scale;
     public int[] offset;
-    public Emotion(string[] args)
+    public Emotion(string expression = "", byte[] sprite = null, float scale = 1, int x = 0, int y = 0)
     {
-        expression = "";
-        sprite = null;
-        scale = 1;
+        this.expression = expression;
+        this.sprite = sprite;
+        this.scale = scale;
         offset = new int[2];
+        offset[0] = x;
+        offset[1] = y;
 
     }
 }

@@ -11,7 +11,25 @@ namespace Rabbyte
         {
             if (reader.TokenType == JsonToken.Null)
                 return null;
-            throw new NotImplementedException();
+
+            JObject obj = JObject.Load(reader);
+
+            string name = obj.ContainsKey("name") ? obj["name"].Value<string>() : "";
+            SBCFile file = new(name);
+
+            JArray expressions = obj["expressions"].Value<JArray>();
+            foreach(JToken emotion in expressions)
+            {
+                JObject emo = JObject.Load(emotion.CreateReader());
+                string expression = emo["expression"].Value<string>();
+                byte[] sprite = emo["sprite"].Value<byte[]>();
+                float scale = emo["scale"].Value<float>();
+                int[] offset = emo["offset"].Value<int[]>();
+
+                file.addExpression(expression, sprite, scale, offset[0], offset[1]);
+            }
+
+            return file;
         }
         public override void WriteJson(JsonWriter writer, SBCFile value, JsonSerializer serializer)
         {
