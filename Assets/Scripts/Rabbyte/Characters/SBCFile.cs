@@ -35,6 +35,16 @@ namespace Rabbyte
         {
             expressions.RemoveAt(_curExp);
         }
+
+        public string Serialize()
+        {
+            return JsonConvert.SerializeObject(this, Formatting.None, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                TypeNameHandling = TypeNameHandling.Arrays,
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+            });
+        }
     }
 }
 
