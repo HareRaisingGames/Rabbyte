@@ -11,7 +11,7 @@ namespace Rabbyte
 {
     public static class StarbornFileHandler
     {
-        static readonly string tempDir = Path.Combine(Application.temporaryCachePath, "RIQCache");
+        static readonly string tempDir = Path.Combine(Application.temporaryCachePath, "SBCache");
         static readonly string treeDir = Path.Combine(tempDir, "Current");
         static readonly string resourcesDir = Path.Combine(treeDir, "Resources");
         static readonly string audioDir = Path.Combine(treeDir, "Music");
@@ -30,12 +30,12 @@ namespace Rabbyte
 
         //public static 
 
-        public static void WriteCharacter(SBCFile character, int index)
+        public static void WriteCharacter(SBCFile character)
         {
             if (!Directory.Exists(charDir))
                 Directory.CreateDirectory(charDir);
 
-            string charName = $"chart{index}";
+            string charName = character.filename;
             string charPath = Path.Combine(charDir, charName + ".json");
             string charJson = character.Serialize();
             File.WriteAllText(charPath, charJson);
@@ -55,6 +55,21 @@ namespace Rabbyte
 
             lastReadCharacter = JsonConvert.DeserializeObject<SBCFile>(charJson);
             return lastReadCharacter;
+        }
+
+        public static string ExtractCharacter(string path)
+        {
+            ZipFile.ExtractToDirectory(path, charDir, true);
+            return charDir;
+        }
+
+        public static void PackCharacter(string destPath)
+        {
+            if (File.Exists(destPath))
+            {
+                File.Delete(destPath);
+            }
+            ZipFile.CreateFromDirectory(charDir, destPath, System.IO.Compression.CompressionLevel.Optimal, false);
         }
     }
 }

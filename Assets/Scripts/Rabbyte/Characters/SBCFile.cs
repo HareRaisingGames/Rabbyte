@@ -36,6 +36,28 @@ namespace Rabbyte
             expressions.RemoveAt(_curExp);
         }
 
+        public void setName(string name)
+        {
+            if (expressions.Count != 0)
+            {
+                Emotion emotionSet = expressions[_curExp];
+                emotionSet.expression = name;
+                expressions[_curExp] = emotionSet;
+            }
+        }
+
+        public void setImage(byte[] image)
+        {
+            if (expressions.Count != 0)
+            {
+                Emotion emotionSet = expressions[_curExp];
+                emotionSet.sprite = image;
+                expressions[_curExp] = emotionSet;
+            }
+        }
+
+
+
         public string Serialize()
         {
             return JsonConvert.SerializeObject(this, Formatting.None, new JsonSerializerSettings

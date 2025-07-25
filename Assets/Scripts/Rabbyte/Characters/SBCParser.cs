@@ -51,7 +51,10 @@ namespace Rabbyte
                 writer.WritePropertyName("scale");
                 writer.WriteValue(emotion.scale);
                 writer.WritePropertyName("offset");
-                writer.WriteValue(emotion.offset);
+                writer.WriteStartArray();
+                writer.WriteValue(emotion.offset[0]);
+                writer.WriteValue(emotion.offset[1]);
+                writer.WriteEndArray();
 
                 writer.WriteEndObject();
             }
