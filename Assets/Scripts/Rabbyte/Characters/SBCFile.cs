@@ -22,6 +22,10 @@ namespace Rabbyte
         }
         public int curExp
         {
+            get
+            {
+                return _curExp;
+            }
             set
             {
                 _curExp = value;
