@@ -12,6 +12,14 @@ namespace Rabbyte
         public string filename;
         public List<Emotion> expressions = new List<Emotion>();
         private int _curExp = -1;
+
+        public Emotion curEmotion
+        {
+            get
+            {
+                return expressions[_curExp];
+            }
+        }
         public int curExp
         {
             set
@@ -24,6 +32,7 @@ namespace Rabbyte
         {
             filename = name;
             addExpression();
+            _curExp = 0;
         }
 
         //Add a new expression
