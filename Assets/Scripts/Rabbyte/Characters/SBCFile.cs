@@ -54,7 +54,7 @@ namespace Rabbyte
         {
             Emotion emotion = new Emotion(expression, sprite, scale, x, y);
             expressions.Add(emotion);
-            _curExp = expressions.IndexOf(emotion);
+            //_curExp = expressions.IndexOf(emotion);
         }
 
         //Remove the following expression
