@@ -80,8 +80,8 @@ public class Tester : MonoBehaviour
         {
             if (paths.Length > 0)
             {
-                //try
-                //{
+                try
+                {
                     var filename = paths[0].Split("\\")[paths[0].Split("\\").Length - 1];
                     filename = filename.Remove(filename.Length - 4);
                     var path = StarbornFileHandler.ExtractCharacter(paths[0]);
@@ -91,12 +91,12 @@ public class Tester : MonoBehaviour
                     Sprite sprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f);
                     image.sprite = sprite;
                     Debug.Log(file.expressions[0].offset[1]);
-                //}
-                //catch (System.Exception e)
-                //{
+                }
+                catch (System.Exception e)
+                {
 
-                //return;
-                //}
+                    return;
+                }
             }
             await Task.Yield();
         });
