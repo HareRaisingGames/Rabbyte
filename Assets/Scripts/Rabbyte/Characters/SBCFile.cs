@@ -61,6 +61,8 @@ namespace Rabbyte
         public void removeExpression()
         {
             expressions.RemoveAt(_curExp);
+            if (expressions.Count == 0)
+                addExpression();
         }
 
         //Set the current name
