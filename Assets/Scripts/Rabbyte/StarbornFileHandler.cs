@@ -53,6 +53,7 @@ namespace Rabbyte
             //Debug.Log($"Jukebox loaded chart {chartPath} ({chartJson.Length} bytes)");
 
             lastReadCharacter = JsonConvert.DeserializeObject<SBCFile>(charJson);
+            lastReadCharacter.removeExpression(); //Because the new SBC will always add a blank character file, we need to remove it from there
             return lastReadCharacter;
         }
 
