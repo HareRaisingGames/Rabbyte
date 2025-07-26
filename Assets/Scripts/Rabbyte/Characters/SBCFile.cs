@@ -39,6 +39,16 @@ namespace Rabbyte
             _curExp = 0;
         }
 
+        //Create a copy of the file
+        public SBCFile(SBCFile copy)
+        {
+            filename = copy.filename;
+            foreach(Emotion expression in copy.expressions)
+            {
+                addExpression(expression.expression, expression.sprite, expression.scale, expression.offset[0], expression.offset[1]);
+            }
+        }
+
         //Add a new expression
         public void addExpression(string expression = "", byte[] sprite = null, float scale = 1, int x = 0, int y = 0)
         {
