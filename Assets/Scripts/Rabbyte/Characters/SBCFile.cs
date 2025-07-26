@@ -94,17 +94,28 @@ namespace Rabbyte
             if (expressions.Count != otherFile.expressions.Count)
                 return false;
 
-            foreach(Emotion emotion in expressions)
+            foreach (Emotion emotion in expressions)
             {
                 Emotion otherEmotion = otherFile.expressions[expressions.IndexOf(emotion)];
 
                 if (emotion.expression != otherEmotion.expression || emotion.scale != otherEmotion.scale)
                     return false;
 
-                if (!emotion.sprite.SequenceEqual(otherEmotion.sprite))
-                    return false;
+                if (emotion.sprite != null && otherEmotion.sprite != null)
+                {
+                    if (!emotion.sprite.SequenceEqual(otherEmotion.sprite))
+                        return false;
+                }
+                else
+                {
+                    if (emotion.sprite == null && otherEmotion.sprite != null)
+                        return false;
+                    else if (emotion.sprite != null && otherEmotion.sprite == null)
+                        return false;
+                }
 
-                for(int i = 0; i < emotion.offset.Length; i++)
+
+                for (int i = 0; i < emotion.offset.Length; i++)
                 {
                     if (emotion.offset[i] != otherEmotion.offset[i])
                         return false;
