@@ -30,27 +30,26 @@ namespace Rabbyte
 
         //public static 
 
-        public static void WriteCharacter(SBCFile character)
+        public static void WriteCharacter(SBCFile character, string charName = "")
         {
             if (!Directory.Exists(charDir))
                 Directory.CreateDirectory(charDir);
 
-            string charName = character.filename;
             string charPath = Path.Combine(charDir, charName + ".json");
             string charJson = character.Serialize();
             File.WriteAllText(charPath, charJson);
         }
 
-        public static SBCFile ReadCharacter(int index)
+        public static SBCFile ReadCharacter(string filename)
         {
-            string chartName = $"chart{index}";
-            string chartPath = Path.Combine(charDir, chartName + ".json");
-            if (!File.Exists(chartPath))
-            {
-                throw new FileNotFoundException($"Chart {index} not found in RIQ file");
-            }
+            //string chartName = $"chart{index}";
+            string charPath = Path.Combine(charDir, filename + ".json");
+            //if (!File.Exists(chartPath))
+            //{
+               // throw new FileNotFoundException($"Chart {index} not found in RIQ file");
+            //}
 
-            string charJson = File.ReadAllText(chartPath);
+            string charJson = File.ReadAllText(charPath);
             //Debug.Log($"Jukebox loaded chart {chartPath} ({chartJson.Length} bytes)");
 
             lastReadCharacter = JsonConvert.DeserializeObject<SBCFile>(charJson);

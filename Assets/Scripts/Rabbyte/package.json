@@ -1,6 +1,6 @@
 {
   "name": "com.hareraisinggames.rabbyte",
-  "version": "0.1.0",
+  "version": "0.1.5",
   "displayName": "Rabbyte",
   "description": "A Parser and Serializer for the custom SBD dialogue files",
   "unity": "2020.1",

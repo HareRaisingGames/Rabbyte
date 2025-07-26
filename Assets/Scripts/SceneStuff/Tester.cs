@@ -60,11 +60,45 @@ public class Tester : MonoBehaviour
             Debug.Log(path.Length);
             if(path.Length != 0)
             {
-                StarbornFileHandler.WriteCharacter(file);
+                var filename = path.Split("\\")[path.Split("\\").Length - 1];
+                filename = filename.Remove(filename.Length - 4);
+                StarbornFileHandler.WriteCharacter(file, filename);
                 StarbornFileHandler.PackCharacter(path);
                 return;
             }
             
+        });
+    }
+
+    public void LoadWindows()
+    {
+        var extensions = new[]
+        {
+            new ExtensionFilter("Character Files", "sbc")
+        };
+        StandaloneFileBrowser.OpenFilePanelAsync("Load Character", "", extensions, false, async (string[] paths) =>
+        {
+            if (paths.Length > 0)
+            {
+                //try
+                //{
+                    var filename = paths[0].Split("\\")[paths[0].Split("\\").Length - 1];
+                    filename = filename.Remove(filename.Length - 4);
+                    var path = StarbornFileHandler.ExtractCharacter(paths[0]);
+                    file = StarbornFileHandler.ReadCharacter(filename);
+                    Texture2D tex = new Texture2D(2, 2);
+                    tex.LoadImage(file.expressions[0].sprite);
+                    Sprite sprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f);
+                    image.sprite = sprite;
+                    Debug.Log(file.expressions[0].offset[1]);
+                //}
+                //catch (System.Exception e)
+                //{
+
+                //return;
+                //}
+            }
+            await Task.Yield();
         });
     }
 }

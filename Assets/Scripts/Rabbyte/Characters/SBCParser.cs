@@ -22,9 +22,15 @@ namespace Rabbyte
             {
                 JObject emo = JObject.Load(emotion.CreateReader());
                 string expression = emo["expression"].Value<string>();
-                byte[] sprite = emo["sprite"].Value<byte[]>();
+                byte[] sprite = Convert.FromBase64String(emo["sprite"].Value<string>());
                 float scale = emo["scale"].Value<float>();
-                int[] offset = emo["offset"].Value<int[]>();
+                int[] offset = new int[2];
+                //offset[0] = offset[1] = 0;
+                JArray offsets = emo["offset"].Value<JArray>();
+                for(int i = 0; i < offsets.Count; i++)
+                {
+                    offset[i] = offsets[i].Value<int>();
+                }
 
                 file.addExpression(expression, sprite, scale, offset[0], offset[1]);
             }
