@@ -2,9 +2,10 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
+using System.Linq;
 
 namespace Rabbyte
-{ 
+{
     [JsonConverter(typeof(SBCParser))]
     public class SBCFile
     {
@@ -22,8 +23,10 @@ namespace Rabbyte
         public SBCFile(string name = "")
         {
             filename = name;
+            addExpression();
         }
 
+        //Add a new expression
         public void addExpression(string expression = "", byte[] sprite = null, float scale = 1, int x = 0, int y = 0)
         {
             Emotion emotion = new Emotion(expression, sprite, scale, x, y);
@@ -31,11 +34,13 @@ namespace Rabbyte
             _curExp = expressions.IndexOf(emotion);
         }
 
+        //Remove the following expression
         public void removeExpression()
         {
             expressions.RemoveAt(_curExp);
         }
 
+        //Set the current name
         public void setName(string name)
         {
             if (expressions.Count != 0)
@@ -46,6 +51,7 @@ namespace Rabbyte
             }
         }
 
+        //Set the current image
         public void setImage(byte[] image)
         {
             if (expressions.Count != 0)
@@ -54,6 +60,58 @@ namespace Rabbyte
                 emotionSet.sprite = image;
                 expressions[_curExp] = emotionSet;
             }
+        }
+
+        //Set the current scale
+        public void setScale(float scale)
+        {
+            if (expressions.Count != 0)
+            {
+                Emotion emotionSet = expressions[_curExp];
+                emotionSet.scale = scale;
+                expressions[_curExp] = emotionSet;
+            }
+        }
+
+        //Set the current offset
+        public void setOffset(int x = 0, int y = 0)
+        {
+            if (expressions.Count != 0)
+            {
+                Emotion emotionSet = expressions[_curExp];
+                emotionSet.offset[0] = x;
+                emotionSet.offset[1] = y;
+                expressions[_curExp] = emotionSet;
+            }
+        }
+
+        //Check if two files are equal to each other
+        public bool Equals(SBCFile otherFile)
+        {
+            if (filename != otherFile.filename)
+                return false;
+
+            if (expressions.Count != otherFile.expressions.Count)
+                return false;
+
+            foreach(Emotion emotion in expressions)
+            {
+                Emotion otherEmotion = otherFile.expressions[expressions.IndexOf(emotion)];
+
+                if (emotion.expression != otherEmotion.expression || emotion.scale != otherEmotion.scale)
+                    return false;
+
+                if (!emotion.sprite.SequenceEqual(otherEmotion.sprite))
+                    return false;
+
+                for(int i = 0; i < emotion.offset.Length; i++)
+                {
+                    if (emotion.offset[i] != otherEmotion.offset[i])
+                        return false;
+                }
+            }
+
+            return true;
         }
 
 
