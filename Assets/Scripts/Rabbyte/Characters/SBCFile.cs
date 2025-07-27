@@ -32,12 +32,12 @@ namespace Rabbyte
             }
         }
 
-        public SBCFile()
-        {
-            addExpression();
-            _curExp = 0;
-        }
-        public SBCFile(string name = "") : this()
+        //public SBCFile()
+        //{
+            //addExpression();
+            //_curExp = 0;
+        //}
+        public SBCFile(string name = "")
         {
             filename = name;
             addExpression();
