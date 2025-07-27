@@ -32,20 +32,21 @@ namespace Rabbyte
             }
         }
 
-        public SBCFile()
+        public SBCFile(bool load = false) : base()
         {
-            addExpression();
+            if(!load)
+                addExpression();
             _curExp = 0;
         }
-        public SBCFile(string name = ""): this()
+        public SBCFile(string name = "", bool load = false): this(load)
         {
             filename = name;
-            addExpression();
-            _curExp = 0;
+            //addExpression();
+            //_curExp = 0;
         }
 
         //Create a copy of the file
-        public SBCFile(SBCFile copy) : this()
+        public SBCFile(SBCFile copy) : this(true)
         {
             filename = copy.filename;
             foreach(Emotion expression in copy.expressions)

@@ -19,7 +19,7 @@ namespace Rabbyte
         static readonly string dialogueDir = Path.Combine(treeDir, "Dialogue");
         static readonly string metadataDir = Path.Combine(treeDir, ".meta");
 
-        static SBCFile lastReadCharacter;
+        static SBCFile lastReadCharacter = new(true);
 
         public static void Test()
         {

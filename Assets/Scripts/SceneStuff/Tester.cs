@@ -10,12 +10,14 @@ using SFB;
 public class Tester : MonoBehaviour
 {
     public Image image;
-    public SBCFile file = new();
+    public SBCFile file = new(false);
+    public SBCFile copy = new(false);
 
     // Start is called before the first frame update
     void Start()
     {
-        file.addExpression();
+        Debug.Log(file.expressions.Count);
+        //file.addExpression();
     }
 
     // Update is called once per frame
@@ -64,6 +66,7 @@ public class Tester : MonoBehaviour
                 filename = filename.Remove(filename.Length - 4);
                 StarbornFileHandler.WriteCharacter(file, filename);
                 StarbornFileHandler.PackCharacter(path);
+                copy = new(file);
                 return;
             }
             
@@ -90,7 +93,8 @@ public class Tester : MonoBehaviour
                     tex.LoadImage(file.expressions[0].sprite);
                     Sprite sprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f);
                     image.sprite = sprite;
-                    Debug.Log(file.expressions[0].offset[1]);
+                    Debug.Log(file.expressions.Count);
+                    copy = new(file);
                 }
                 catch (System.Exception e)
                 {
@@ -100,5 +104,10 @@ public class Tester : MonoBehaviour
             }
             await Task.Yield();
         });
+    }
+
+    public void SameFile()
+    {
+        Debug.Log(file.Equals(copy));
     }
 }
