@@ -32,12 +32,13 @@ namespace Rabbyte
             }
         }
 
-        //public SBCFile()
-        //{
-            //addExpression();
-            //_curExp = 0;
-        //}
-        public SBCFile(string name = "")
+        public SBCFile()
+        {
+            addExpression();
+            _curExp = 0;
+        }
+
+        public SBCFile(string name = "") : this()
         {
             filename = name;
             addExpression();
@@ -52,6 +53,7 @@ namespace Rabbyte
             {
                 addExpression(expression.expression, expression.sprite, expression.scale, expression.offset[0], expression.offset[1]);
             }
+            _curExp = 0;
         }
 
         //Add a new expression
