@@ -34,7 +34,8 @@ namespace Rabbyte
 
         public SBCFile()
         {
-
+            addExpression();
+            _curExp = 0;
         }
         public SBCFile(string name = ""): this()
         {
