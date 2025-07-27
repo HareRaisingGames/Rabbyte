@@ -32,7 +32,11 @@ namespace Rabbyte
             }
         }
 
-        public SBCFile(string name = "")
+        public SBCFile()
+        {
+
+        }
+        public SBCFile(string name = "") : this()
         {
             filename = name;
             addExpression();
@@ -40,7 +44,7 @@ namespace Rabbyte
         }
 
         //Create a copy of the file
-        public SBCFile(SBCFile copy)
+        public SBCFile(SBCFile copy) : this()
         {
             filename = copy.filename;
             foreach(Emotion expression in copy.expressions)
