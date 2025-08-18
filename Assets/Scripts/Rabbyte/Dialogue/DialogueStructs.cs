@@ -30,6 +30,7 @@ public struct CharacterPack
     public Alignment alignment;
     public float offset;
     public bool flipX;
+    public bool isSpeaking;
 }
 
 [System.Serializable]
