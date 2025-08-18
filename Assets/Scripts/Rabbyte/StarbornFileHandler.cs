@@ -20,6 +20,8 @@ namespace Rabbyte
         static readonly string metadataDir = Path.Combine(treeDir, ".meta");
 
         static SBCFile lastReadCharacter = new(true);
+        static SBDFile lastReadDialogue = new();
+        static SimpleSBDFile lastSReadDialogue = new();
 
         public static void Test()
         {
@@ -28,7 +30,27 @@ namespace Rabbyte
             //File.WriteAllText()
         }
 
-        //public static 
+        public static void ClearCache()
+        {
+            //if (!IsCacheLocked())
+            //{
+                if (Directory.Exists(treeDir))
+                {
+                    Directory.Delete(treeDir, true);
+                }
+            //}
+        }
+
+        public static void ClearCharacterCache()
+        {
+            //if (!IsCacheLocked())
+            //{
+            if (Directory.Exists(charDir))
+            {
+                Directory.Delete(charDir, true);
+            }
+            //}
+        }
 
         public static void WriteCharacter(SBCFile character, string charName = "")
         {
@@ -38,6 +60,26 @@ namespace Rabbyte
             string charPath = Path.Combine(charDir, charName + ".json");
             string charJson = character.Serialize();
             File.WriteAllText(charPath, charJson);
+        }
+
+        public static void WriteDialogue(SBDFile dialogue, string dialogueName = "")
+        {
+            if (!Directory.Exists(dialogueDir))
+                Directory.CreateDirectory(dialogueDir);
+
+            string dialoguePath = Path.Combine(dialogueDir, dialogueName + ".json");
+            string dialogueJson = dialogue.Serialize();
+            File.WriteAllText(dialoguePath, dialogueJson);
+        }
+
+        public static void WriteSimpleDialogue(SimpleSBDFile dialogue, string dialogueName = "")
+        {
+            if (!Directory.Exists(dialogueDir))
+                Directory.CreateDirectory(dialogueDir);
+
+            string dialoguePath = Path.Combine(dialogueDir, dialogueName + ".json");
+            string dialogueJson = dialogue.Serialize();
+            File.WriteAllText(dialoguePath, dialogueJson);
         }
 
         public static SBCFile ReadCharacter(string filename)
@@ -57,10 +99,50 @@ namespace Rabbyte
             return lastReadCharacter;
         }
 
+        public static SBDFile ReadDialogue(string filename)
+        {
+            //string chartName = $"chart{index}";
+            string dialoguePath = Path.Combine(dialogueDir, filename + ".json");
+            //if (!File.Exists(chartPath))
+            //{
+            // throw new FileNotFoundException($"Chart {index} not found in RIQ file");
+            //}
+
+            string dialogueJson = File.ReadAllText(dialoguePath);
+            //Debug.Log($"Jukebox loaded chart {chartPath} ({chartJson.Length} bytes)");
+
+            lastReadDialogue = JsonConvert.DeserializeObject<SBDFile>(dialogueJson);
+            //lastReadDialogue.removeExpression(); //Because the new SBC will always add a blank character file, we need to remove it from there
+            return lastReadDialogue;
+        }
+
+        public static SimpleSBDFile ReadSimpleDialogue(string filename)
+        {
+            //string chartName = $"chart{index}";
+            string dialoguePath = Path.Combine(dialogueDir, filename + ".json");
+            //if (!File.Exists(chartPath))
+            //{
+            // throw new FileNotFoundException($"Chart {index} not found in RIQ file");
+            //}
+
+            string dialogueJson = File.ReadAllText(dialoguePath);
+            //Debug.Log($"Jukebox loaded chart {chartPath} ({chartJson.Length} bytes)");
+
+            lastSReadDialogue = JsonConvert.DeserializeObject<SimpleSBDFile>(dialogueJson);
+            //lastReadDialogue.removeExpression(); //Because the new SBC will always add a blank character file, we need to remove it from there
+            return lastSReadDialogue;
+        }
+
         public static string ExtractCharacter(string path)
         {
             ZipFile.ExtractToDirectory(path, charDir, true);
             return charDir;
+        }
+
+        public static string ExtractDialogue(string path)
+        {
+            ZipFile.ExtractToDirectory(path, dialogueDir, true);
+            return dialogueDir;
         }
 
         public static void PackCharacter(string destPath)
@@ -70,6 +152,15 @@ namespace Rabbyte
                 File.Delete(destPath);
             }
             ZipFile.CreateFromDirectory(charDir, destPath, System.IO.Compression.CompressionLevel.Optimal, false);
+        }
+
+        public static void PackDialogue(string destPath)
+        {
+            if (File.Exists(destPath))
+            {
+                File.Delete(destPath);
+            }
+            ZipFile.CreateFromDirectory(dialogueDir, destPath, System.IO.Compression.CompressionLevel.Optimal, false);
         }
     }
 }
