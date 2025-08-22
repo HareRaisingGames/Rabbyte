@@ -16,7 +16,7 @@ namespace Rabbyte
             set
             {
                 _character = value;
-                expression = _character.expressions[0].expression;
+                if(_character.expressions.Count != 0) expression = _character.expressions[0].expression;
             }
         }
         public string expression
