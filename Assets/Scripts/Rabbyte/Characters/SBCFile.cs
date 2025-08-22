@@ -156,7 +156,15 @@ namespace Rabbyte
             return true;
         }
 
-
+        public Emotion GetEmotionByName(string name)
+        {
+            foreach (Emotion emotion in expressions)
+            {
+                if (emotion.expression == name)
+                    return emotion;
+            }
+                throw new NullReferenceException("The following emotion cannot be found");
+        }
 
         public string Serialize()
         {
@@ -184,6 +192,5 @@ public struct Emotion
         offset = new int[2];
         offset[0] = x;
         offset[1] = y;
-
     }
 }
