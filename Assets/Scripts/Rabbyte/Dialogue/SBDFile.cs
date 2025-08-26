@@ -26,6 +26,10 @@ namespace Rabbyte
         public string fileName;
         public string displayName;
 
+        public SBDFile()
+        {
+
+        }
         public void AddBackground(string name, byte[] data)
         {
             backgrounds.Add(name, data);
@@ -153,6 +157,34 @@ namespace Rabbyte
 
         public byte[] music = null;
 
+        public SimpleSBDFile(bool load = false) : base()
+        {
+            if (!load)
+                AddLine();
+        }
+
+        public SimpleSBDFile(SimpleSBDFile copy) : this(true)
+        {
+            fileName = copy.fileName;
+            displayName = copy.displayName;
+            chapter = copy.chapter;
+            volume = copy.volume;
+            type = copy.type;
+            music = copy.music;
+
+            foreach(BetaDialogueSequence line in copy.lines)
+                AddLineByClass(line);
+
+            foreach(KeyValuePair<string, byte[]> background in copy.GetBackgrounds())
+                AddBackground(background.Key, background.Value);
+
+            foreach (KeyValuePair<string, byte[]> foreground in copy.GetForegrounds())
+                AddBackground(foreground.Key, foreground.Value);
+
+            foreach (KeyValuePair<string, List<Emotion>> character in copy.GetCharacters())
+                characters.Add(character.Key, character.Value);
+        }
+
         public void AddCharacter(SBCFile data)
         {
             if(!characters.ContainsKey(data.filename))
@@ -165,10 +197,7 @@ namespace Rabbyte
                 characters.Remove(name);
         }
 
-        public Dictionary<string, List<Emotion>> GetCharacters()
-        {
-            return characters;
-        }
+        public Dictionary<string, List<Emotion>> GetCharacters() => characters;
 
         public void AddBackground(string name, byte[] data)
         {
@@ -180,10 +209,7 @@ namespace Rabbyte
             backgrounds.Remove(name);
         }
 
-        public Dictionary<string, byte[]> GetBackgrounds()
-        {
-            return backgrounds;
-        }
+        public Dictionary<string, byte[]> GetBackgrounds() => backgrounds;
 
         //For loading a new background
         public byte[] getBackgroundFromName(string name)
@@ -207,10 +233,7 @@ namespace Rabbyte
             foregrounds.Add(name, data);
         }
 
-        public Dictionary<string, byte[]> GetForegrounds()
-        {
-            return foregrounds;
-        }
+        public Dictionary<string, byte[]> GetForegrounds() => foregrounds;
 
         public byte[] getForegroundFromName(string name)
         {
@@ -230,10 +253,7 @@ namespace Rabbyte
         #region Dialogue Data
 
         protected List<BetaDialogueSequence> lines = new List<BetaDialogueSequence>();
-        public List<BetaDialogueSequence> GetLines()
-        {
-            return lines;
-        }
+        public List<BetaDialogueSequence> GetLines() => lines;
         private int _line;
         public BetaDialogueSequence curLine
         {
@@ -332,6 +352,11 @@ namespace Rabbyte
             _line = set;
         }
 
+        public void AddLine()
+        {
+            lines.Add(new BetaDialogueSequence(lines.Count));
+        }
+
         public void AddLineByClass(BetaDialogueSequence dialogue)
         {
             lines.Add(dialogue);
@@ -348,6 +373,46 @@ namespace Rabbyte
         #endregion
 
         #region Utils
+        public bool Equals(SimpleSBDFile otherFile)
+        {
+            if (fileName != otherFile.fileName)
+                return false;
+            if (displayName != otherFile.displayName)
+                return false;
+            if (chapter != otherFile.chapter)
+                return false;
+            if (volume != otherFile.volume)
+                return false;
+            if(music != null || otherFile.music != null)
+            {
+                if (!music.SequenceEqual(otherFile.music))
+                    return false;
+            }
+
+            bool equalBackgrounds = backgrounds.Count == otherFile.GetBackgrounds().Count && !backgrounds.Except(otherFile.GetBackgrounds()).Any();
+            if (!equalBackgrounds)
+                return false;
+
+            bool equalForegrounds = foregrounds.Count == otherFile.GetForegrounds().Count && !foregrounds.Except(otherFile.GetForegrounds()).Any();
+            if (!equalForegrounds)
+                return false;
+
+            bool equalCharacters = characters.Count == otherFile.GetCharacters().Count && !characters.Except(otherFile.GetCharacters()).Any();
+            if (!equalCharacters)
+                return false;
+
+            if (lines.Count != otherFile.GetLines().Count)
+                return false;
+            else
+            {
+                foreach(BetaDialogueSequence line in lines)
+                {
+                    BetaDialogueSequence otherLine = otherFile.GetLines()[lines.IndexOf(line)];
+                }
+            }
+
+            return true;
+        }
         public string Serialize()
         {
             return JsonConvert.SerializeObject(this, Formatting.None, new JsonSerializerSettings
