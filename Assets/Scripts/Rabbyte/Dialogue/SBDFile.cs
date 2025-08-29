@@ -362,13 +362,29 @@ namespace Rabbyte
             lines.Add(dialogue);
         }
 
-        public void AddLineByValues(int id, string name = "", string text = "", byte[] data = null)
+        public void AddLineByValues(int id, string name = "", string text = "", string background = "", bool autoplay = false)
         {
             BetaDialogueSequence dialogue = new BetaDialogueSequence(id);
             dialogue.name = name;
             dialogue.text = text;
-            dialogue.audio = data;
+            dialogue.background = background;
+            dialogue.autoSkip = autoplay;
             lines.Add(dialogue);
+        }
+
+        public void InsertLineByValues(int id, string name = "", string text = "", string background = "", bool autoplay = false)
+        {
+            BetaDialogueSequence dialogue = new BetaDialogueSequence(id);
+            dialogue.name = name;
+            dialogue.text = text;
+            dialogue.background = background;
+            dialogue.autoSkip = autoplay;
+            lines.Insert(id, dialogue);
+        }
+
+        public void DuplicateCharacters()
+        {
+
         }
         #endregion
 
