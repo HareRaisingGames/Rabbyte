@@ -121,6 +121,11 @@ namespace Rabbyte
             file.chapter = obj["chapter"].Value<int>();
             file.music = obj.ContainsKey("music") ? Convert.FromBase64String(obj["music"].Value<string>()) : null;
 
+            string type = obj["type"].Value<string>();
+            file.type = (StoryType)Enum.Parse(typeof(StoryType), type);
+
+            file.displayName = obj["displayName"].Value<string>();
+
             JToken chars = obj["characters"].Value<JToken>();
             JObject characters = JObject.Load(chars.CreateReader());
 
@@ -248,6 +253,12 @@ namespace Rabbyte
 
             writer.WritePropertyName("chapter");
             writer.WriteValue(value.chapter);
+
+            writer.WritePropertyName("displayName");
+            writer.WriteValue(value.displayName);
+
+            writer.WritePropertyName("type");
+            writer.WriteValue(value.type);
 
             if (value.music != null)
             {
