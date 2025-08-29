@@ -258,7 +258,7 @@ namespace Rabbyte
             writer.WriteValue(value.displayName);
 
             writer.WritePropertyName("type");
-            writer.WriteValue(value.type);
+            writer.WriteValue(value.type.ToString());
 
             if (value.music != null)
             {
