@@ -382,9 +382,20 @@ namespace Rabbyte
             lines.Insert(id, dialogue);
         }
 
-        public void DuplicateCharacters()
+        public void DuplicateCharacters(List<CharacterPack> copy, List<CharacterPack> paste)
         {
-
+            paste.Clear();
+            foreach(CharacterPack character in copy)
+            {
+                CharacterPack chara = new CharacterPack();
+                chara.alignment = character.alignment;
+                chara.character = character.character;
+                chara.emotion = character.emotion;
+                chara.flipX = character.flipX;
+                chara.isSpeaking = character.isSpeaking;
+                chara.offset = character.offset;
+                paste.Add(chara);
+            }
         }
         #endregion
 
@@ -419,12 +430,12 @@ namespace Rabbyte
 
             if (lines.Count != otherFile.GetLines().Count)
                 return false;
-            else
+
+            foreach(BetaDialogueSequence line in lines)
             {
-                foreach(BetaDialogueSequence line in lines)
-                {
-                    BetaDialogueSequence otherLine = otherFile.GetLines()[lines.IndexOf(line)];
-                }
+                BetaDialogueSequence otherLine = otherFile.GetLines()[lines.IndexOf(line)];
+                if (!line.Equals(otherLine))
+                    return false;
             }
 
             return true;
@@ -507,6 +518,44 @@ namespace Rabbyte
         public BetaDialogueSequence(int id)
         {
             this.id = id;
+        }
+
+        public bool Equals(BetaDialogueSequence copyDialogue)
+        {
+            if (name != copyDialogue.name)
+                return false;
+            if (text != copyDialogue.text)
+                return false;
+            if (audio != copyDialogue.audio)
+                return false;
+            if (background != copyDialogue.background)
+                return false;
+            if (foreground != copyDialogue.foreground)
+                return false;
+            if (autoSkip != copyDialogue.autoSkip)
+                return false;
+
+            if (characters.Count != copyDialogue.characters.Count)
+                return false;
+
+            foreach(CharacterPack character in characters)
+            {
+                CharacterPack otherCharacter = copyDialogue.characters[characters.IndexOf(character)];
+                if (character.character != otherCharacter.character)
+                    return false;
+                if (character.emotion != otherCharacter.emotion)
+                    return false;
+                if (character.alignment != otherCharacter.alignment)
+                    return false;
+                if (character.offset != otherCharacter.offset)
+                    return false;
+                if (character.flipX != otherCharacter.flipX)
+                    return false;
+                if (character.isSpeaking != otherCharacter.isSpeaking)
+                    return false;
+            }
+
+            return true;
         }
     }
 
