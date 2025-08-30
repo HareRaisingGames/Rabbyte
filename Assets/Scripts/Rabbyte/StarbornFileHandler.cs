@@ -132,7 +132,11 @@ namespace Rabbyte
             lastSReadDialogue.fileName = filename;
             lastSReadDialogue.RemoveLineAtIndex(0); //Because the new SBC will always add a blank character file, we need to remove it from there
 
-            Debug.Log(lastSReadDialogue.GetBackgrounds().Count);
+            foreach(KeyValuePair<string, List<Emotion>> character in lastSReadDialogue.GetCharacters())
+            {
+                Debug.Log(character.Key + ": " + character.Value.Count);
+            }
+            //Debug.Log(lastSReadDialogue.GetBackgrounds().Count);
             
             return lastSReadDialogue;
         }
