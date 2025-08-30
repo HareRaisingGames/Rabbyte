@@ -41,7 +41,7 @@ namespace Rabbyte
                 return _character.GetEmotionByName(_expression).offset;
             }
         }
-        protected CharacterSprite(SBCFile character)
+        public CharacterSprite(SBCFile character)
         {
             _character = character;
         }
