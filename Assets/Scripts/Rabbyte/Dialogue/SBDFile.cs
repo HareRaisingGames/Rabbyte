@@ -185,28 +185,36 @@ namespace Rabbyte
                 characters.Add(character.Key, character.Value);
         }
 
-        public void AddCharacter(SBCFile data)
+        public bool AddCharacter(SBCFile data)
         {
-            if(!characters.ContainsKey(data.filename))
-                characters.Add(data.filename, data.expressions);
+            if (characters.ContainsKey(data.filename))
+                return false;
+
+            characters.Add(data.filename, data.expressions);
+            return true;
         }
 
         public void RemoveCharacter(string name)
         {
-            if (!characters.ContainsKey(name))
+            if (characters.ContainsKey(name))
                 characters.Remove(name);
         }
 
         public Dictionary<string, List<Emotion>> GetCharacters() => characters;
 
-        public void AddBackground(string name, byte[] data)
+        public bool AddBackground(string name, byte[] data)
         {
+            if (backgrounds.ContainsKey(name))
+                return false;
+
             backgrounds.Add(name, data);
+            return true;
         }
 
         public void RemoveBackground(string name)
         {
-            backgrounds.Remove(name);
+            if (backgrounds.ContainsKey(name))
+                backgrounds.Remove(name);
         }
 
         public Dictionary<string, byte[]> GetBackgrounds() => backgrounds;
@@ -228,9 +236,19 @@ namespace Rabbyte
             return null;
         }
 
-        public void AddForeground(string name, byte[] data)
+        public bool AddForeground(string name, byte[] data)
         {
+            if (foregrounds.ContainsKey(name))
+                return false;
+
             foregrounds.Add(name, data);
+            return true;
+        }
+
+        public void RemoveForeground(string name)
+        {
+            if (foregrounds.ContainsKey(name))
+                foregrounds.Remove(name);
         }
 
         public Dictionary<string, byte[]> GetForegrounds() => foregrounds;
