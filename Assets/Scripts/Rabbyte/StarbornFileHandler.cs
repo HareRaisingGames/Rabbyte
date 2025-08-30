@@ -134,7 +134,8 @@ namespace Rabbyte
 
             foreach(KeyValuePair<string, List<Emotion>> character in lastSReadDialogue.GetCharacters())
             {
-                Debug.Log(character.Key + ": " + character.Value.Count);
+                //Debug.Log(character.Key + ": " + character.Value.Count);
+                character.Value.RemoveAt(0);
             }
             //Debug.Log(lastSReadDialogue.GetBackgrounds().Count);
             
