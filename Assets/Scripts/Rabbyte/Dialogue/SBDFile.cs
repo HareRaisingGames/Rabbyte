@@ -204,7 +204,7 @@ namespace Rabbyte
 
         public bool AddBackground(string name, byte[] data)
         {
-            if (backgrounds.ContainsKey(name))
+            if (backgrounds.ContainsKey(name) || HasExistingBGBytes(data))
                 return false;
 
             backgrounds.Add(name, data);
@@ -238,7 +238,7 @@ namespace Rabbyte
 
         public bool AddForeground(string name, byte[] data)
         {
-            if (foregrounds.ContainsKey(name))
+            if (foregrounds.ContainsKey(name) || HasExistingFGBytes(data))
                 return false;
 
             foregrounds.Add(name, data);
