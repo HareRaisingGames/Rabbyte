@@ -130,7 +130,10 @@ namespace Rabbyte
 
             lastSReadDialogue = JsonConvert.DeserializeObject<SimpleSBDFile>(dialogueJson);
             lastSReadDialogue.fileName = filename;
-            //lastReadDialogue.removeExpression(); //Because the new SBC will always add a blank character file, we need to remove it from there
+            lastSReadDialogue.RemoveLineAtIndex(0); //Because the new SBC will always add a blank character file, we need to remove it from there
+
+            Debug.Log(lastSReadDialogue.GetBackgrounds().Count);
+            
             return lastSReadDialogue;
         }
 

@@ -402,6 +402,11 @@ namespace Rabbyte
             lines.Insert(id, dialogue);
         }
 
+        public void RemoveLineAtIndex(int i)
+        {
+            lines.RemoveAt(i);
+        }
+
         public void DuplicateCharacters(List<CharacterPack> copy, List<CharacterPack> paste)
         {
             paste.Clear();
