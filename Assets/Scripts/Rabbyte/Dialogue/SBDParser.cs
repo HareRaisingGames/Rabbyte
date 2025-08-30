@@ -291,7 +291,7 @@ namespace Rabbyte
                 writer.WritePropertyName("id");
                 writer.WriteValue(dialogue.id);
 
-                if (!string.IsNullOrEmpty(dialogue.foreground))
+                if (!string.IsNullOrEmpty(dialogue.background))
                 {
                     writer.WritePropertyName("background");
                     writer.WriteValue(dialogue.background);
