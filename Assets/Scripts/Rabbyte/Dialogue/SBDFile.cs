@@ -363,6 +363,8 @@ namespace Rabbyte
         public void ChangeDialogue(int change)
         {
             _line += change;
+            if (_line >= lines.Count) _line = 0;
+            else if (_line < 0) _line = lines.Count - 1;
         }
 
         public void SetDialogue(int set)
