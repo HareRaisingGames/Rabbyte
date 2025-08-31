@@ -352,6 +352,8 @@ namespace Rabbyte
             }
         }
 
+        public int id => curLine != null ? curLine.id : -1;
+
         public List<CharacterPack> characterPack
         {
             get
