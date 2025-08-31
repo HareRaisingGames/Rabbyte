@@ -360,6 +360,11 @@ namespace Rabbyte
             {
                 return curLine != null ? curLine.characters : null;
             }
+            set
+            {
+                if (curLine != null)
+                    curLine.characters = value;
+            }
         }
 
         public void ChangeDialogue(int change)
