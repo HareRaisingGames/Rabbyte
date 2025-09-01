@@ -25,7 +25,7 @@ namespace Rabbyte
         public StoryType type = StoryType.Main;
         public string fileName;
         public string displayName;
-
+        public string? description;
         public SBDFile()
         {
 
@@ -154,6 +154,7 @@ namespace Rabbyte
         public StoryType type = StoryType.Main;
         public string fileName;
         public string displayName;
+        public string? description;
 
         public byte[] music = null;
 

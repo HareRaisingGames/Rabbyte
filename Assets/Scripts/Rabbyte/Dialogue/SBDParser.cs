@@ -124,6 +124,8 @@ namespace Rabbyte
             string type = obj["type"].Value<string>();
             file.type = (StoryType)Enum.Parse(typeof(StoryType), type);
 
+            file.description = obj.ContainsKey("description") ? obj["description"].Value<string>() : "";
+
             file.displayName = obj["displayName"].Value<string>();
 
             JToken chars = obj["characters"].Value<JToken>();
@@ -249,6 +251,12 @@ namespace Rabbyte
             {
                 writer.WritePropertyName("volume");
                 writer.WriteValue(value.volume);
+            }
+
+            if(value.description != "" && value.description != null)
+            {
+                writer.WritePropertyName("description");
+                writer.WriteValue(value.description);
             }
 
             writer.WritePropertyName("chapter");
