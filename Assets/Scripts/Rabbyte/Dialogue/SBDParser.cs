@@ -253,17 +253,17 @@ namespace Rabbyte
                 writer.WriteValue(value.volume);
             }
 
-            if(value.description != "" && value.description != null)
-            {
-                writer.WritePropertyName("description");
-                writer.WriteValue(value.description);
-            }
-
             writer.WritePropertyName("chapter");
             writer.WriteValue(value.chapter);
 
             writer.WritePropertyName("displayName");
             writer.WriteValue(value.displayName);
+
+            if (value.description != "" && value.description != null)
+            {
+                writer.WritePropertyName("description");
+                writer.WriteValue(value.description);
+            }
 
             writer.WritePropertyName("type");
             writer.WriteValue(value.type.ToString());
