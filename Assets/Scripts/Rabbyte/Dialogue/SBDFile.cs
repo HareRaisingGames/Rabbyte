@@ -513,6 +513,9 @@ namespace Rabbyte
         public string background;
         public string foreground;
 
+        //The name of the minigame to play here
+        public string minigame = "";
+
         //Text line for each dialogue
         public DialogueText[] text;
 
@@ -537,6 +540,8 @@ namespace Rabbyte
         public string text;
         public byte[] audio = null;
         public int id;
+
+        public string minigame = "";
         
         //Backgrounds
         public string background;
@@ -566,6 +571,8 @@ namespace Rabbyte
             if (foreground != copyDialogue.foreground)
                 return false;
             if (autoSkip != copyDialogue.autoSkip)
+                return false;
+            if (minigame != copyDialogue.minigame)
                 return false;
 
             if (characters.Count != copyDialogue.characters.Count)
