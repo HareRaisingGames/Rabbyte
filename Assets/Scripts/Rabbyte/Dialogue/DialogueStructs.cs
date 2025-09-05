@@ -60,15 +60,18 @@ public class AudioByte
 {
     public byte[] data;
     public string type;
+    public string name;
 
-    public AudioByte(byte[] data = null, string type = "")
+    public AudioByte(byte[] data = null, string type = "", string name = "")
     {
         this.data = data;
+        this.name = name;
         this.type = type;
     }
 
     public AudioByte(string filename)
     {
+        name = filename.Split("\\")[filename.Split("\\").Length - 1];
         data = File.ReadAllBytes(filename);
         type = AudioUtils.GetAudioType(filename, out _).ToString();
     }

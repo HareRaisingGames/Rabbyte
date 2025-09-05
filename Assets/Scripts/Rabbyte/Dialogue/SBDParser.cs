@@ -124,7 +124,7 @@ namespace Rabbyte
                 JToken musicTok = obj["music"].Value<JToken>();
                 JObject musicObj = JObject.Load(musicTok.CreateReader());
 
-                AudioByte music = new AudioByte(Converters.StringToBytes(musicObj["data"].Value<string>()), musicObj["type"].Value<string>());
+                AudioByte music = new AudioByte(Converters.StringToBytes(musicObj["data"].Value<string>()), musicObj["type"].Value<string>(), musicObj["name"].Value<string>());
                 file.music = music;
             }
             //file.music = obj.ContainsKey("music") ? Converters.StringToBytes(obj["music"].Value<string>()) : null;
@@ -178,7 +178,7 @@ namespace Rabbyte
                     JToken musicTok = dialogue["audio"].Value<JToken>();
                     JObject musicObj = JObject.Load(musicTok.CreateReader());
 
-                    AudioByte audio = new AudioByte(Converters.StringToBytes(musicObj["data"].Value<string>()), musicObj["type"].Value<string>());
+                    AudioByte audio = new AudioByte(Converters.StringToBytes(musicObj["data"].Value<string>()), musicObj["type"].Value<string>(), musicObj["name"].Value<string>());
                     betaDialogueSequence.audio = audio;
                 }
                 // = dialogue.ContainsKey("audio") ? Converters.StringToBytes(dialogue["audio"].Value<string>()) : null;
@@ -288,6 +288,8 @@ namespace Rabbyte
             {
                 writer.WritePropertyName("music");
                 writer.WriteStartObject();
+                    writer.WritePropertyName("name");
+                    writer.WriteValue(value.music.name);
                     writer.WritePropertyName("data");
                     writer.WriteValue(value.music.data);
                     writer.WritePropertyName("type");
@@ -315,6 +317,8 @@ namespace Rabbyte
                 {
                     writer.WritePropertyName("audio");
                         writer.WriteStartObject();
+                        writer.WritePropertyName("name");
+                        writer.WriteValue(dialogue.audio.name);
                         writer.WritePropertyName("data");
                         writer.WriteValue(dialogue.audio.data);
                         writer.WritePropertyName("type");

@@ -171,5 +171,12 @@ namespace Rabbyte
             }
             ZipFile.CreateFromDirectory(dialogueDir, destPath, System.IO.Compression.CompressionLevel.Optimal, false);
         }
+
+        public static void CacheAudio(string filename, byte[] bytes)
+        {
+            if (!Directory.Exists(audioDir))
+                Directory.CreateDirectory(audioDir);
+            File.WriteAllBytes($"{audioDir}\\{filename}", bytes);
+        }
     }
 }
