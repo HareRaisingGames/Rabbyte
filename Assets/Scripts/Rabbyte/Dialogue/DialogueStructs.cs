@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Rabbyte;
+using System.IO;
 
 [System.Serializable]
 public struct DialogueText
@@ -53,4 +54,22 @@ public enum Alignment
     left,
     center,
     right
+}
+
+public class AudioByte
+{
+    public byte[] data;
+    public string type;
+
+    public AudioByte(byte[] data = null, string type = "")
+    {
+        this.data = data;
+        this.type = type;
+    }
+
+    public AudioByte(string filename)
+    {
+        data = File.ReadAllBytes(filename);
+        type = AudioUtils.GetAudioType(filename, out _).ToString();
+    }
 }

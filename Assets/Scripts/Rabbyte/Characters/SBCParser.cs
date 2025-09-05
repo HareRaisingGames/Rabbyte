@@ -22,7 +22,7 @@ namespace Rabbyte
             {
                 JObject emo = JObject.Load(emotion.CreateReader());
                 string expression = emo["expression"].Value<string>();
-                byte[] sprite = Convert.FromBase64String(emo["sprite"].Value<string>());
+                byte[] sprite = Converters.StringToBytes(emo["sprite"].Value<string>());
                 float scale = emo["scale"].Value<float>();
                 int[] offset = new int[2];
                 //offset[0] = offset[1] = 0;

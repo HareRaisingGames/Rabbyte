@@ -6,7 +6,9 @@ using Rabbyte;
 using System.Threading.Tasks;
 using System;
 using System.IO;
+using System.IO.Compression;
 using SFB;
+using UnityEngine.Networking;
 using System.Linq;
 
 public class DialogueTester : MonoBehaviour
@@ -64,6 +66,36 @@ public class DialogueTester : MonoBehaviour
                 }
             }
             await Task.Yield();
+        });
+    }
+
+    public void OpenAudio()
+    {
+        var extensions = new[]
+{
+            new ExtensionFilter("Audio Files", "mp3", "wav", "ogg")
+        };
+        StandaloneFileBrowser.OpenFilePanelAsync("Open File", "", extensions, false, async (string[] paths) =>
+        {
+            if (paths.Length > 0)
+            {
+                try
+                {
+                    //var filename = paths[0].Split("\\")[paths[0].Split("\\").Length - 1];
+                    //filename = filename.Remove(filename.Length - 4);
+
+                    //byte[] audioData = File.ReadAllBytes(paths[0]);
+                    //Debug.Log(audioData);
+                    /*AudioSource audio = new GameObject("Audio").AddComponent<AudioSource>();
+                    audio.clip = WavUtility.ToAudioClip(paths[0]);
+                    audio.Play();*/
+                }
+                catch (System.Exception e)
+                {
+
+                }
+                await Task.Yield();
+            }
         });
     }
 

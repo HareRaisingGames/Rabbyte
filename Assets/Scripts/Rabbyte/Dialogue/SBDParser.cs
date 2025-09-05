@@ -21,7 +21,7 @@ namespace Rabbyte
 
             foreach(JProperty property in backgrounds.Properties())
             {
-                byte[] bg = Convert.FromBase64String(backgrounds[property.Name].Value<string>());
+                byte[] bg = Converters.StringToBytes(backgrounds[property.Name].Value<string>());
                 file.AddBackground(property.Name, bg);
             }
 
@@ -30,7 +30,7 @@ namespace Rabbyte
 
             foreach (JProperty property in foregrounds.Properties())
             {
-                byte[] fg = Convert.FromBase64String(foregrounds[property.Name].Value<string>());
+                byte[] fg = Converters.StringToBytes(foregrounds[property.Name].Value<string>());
                 file.AddForeground(property.Name, fg);
             }
 
@@ -104,7 +104,7 @@ namespace Rabbyte
 
             foreach (JProperty property in backgrounds.Properties())
             {
-                byte[] bg = Convert.FromBase64String(backgrounds[property.Name].Value<string>());
+                byte[] bg = Converters.StringToBytes(backgrounds[property.Name].Value<string>());
                 file.AddBackground(property.Name, bg);
             }
 
@@ -113,13 +113,21 @@ namespace Rabbyte
 
             foreach (JProperty property in foregrounds.Properties())
             {
-                byte[] fg = Convert.FromBase64String(foregrounds[property.Name].Value<string>());
+                byte[] fg = Converters.StringToBytes(foregrounds[property.Name].Value<string>());
                 file.AddForeground(property.Name, fg);
             }
 
             file.volume = obj.ContainsKey("volume") ? obj["volume"].Value<int>() : 0;
             file.chapter = obj["chapter"].Value<int>();
-            file.music = obj.ContainsKey("music") ? Convert.FromBase64String(obj["music"].Value<string>()) : null;
+            if(obj.ContainsKey("music"))
+            {
+                JToken musicTok = obj["music"].Value<JToken>();
+                JObject musicObj = JObject.Load(musicTok.CreateReader());
+
+                AudioByte music = new AudioByte(Converters.StringToBytes(musicObj["data"].Value<string>()), musicObj["type"].Value<string>());
+                file.music = music;
+            }
+            //file.music = obj.ContainsKey("music") ? Converters.StringToBytes(obj["music"].Value<string>()) : null;
 
             string type = obj["type"].Value<string>();
             file.type = (StoryType)Enum.Parse(typeof(StoryType), type);
@@ -141,7 +149,7 @@ namespace Rabbyte
                 {
                     JObject emo = JObject.Load(emotion.CreateReader());
                     string expression = emo["expression"].Value<string>();
-                    byte[] sprite = Convert.FromBase64String(emo["sprite"].Value<string>());
+                    byte[] sprite = Converters.StringToBytes(emo["sprite"].Value<string>());
                     float scale = emo["scale"].Value<float>();
                     int[] offset = new int[2];
                     //offset[0] = offset[1] = 0;
@@ -165,7 +173,15 @@ namespace Rabbyte
 
                 betaDialogueSequence.name = dialogue.ContainsKey("name") ? dialogue["name"].Value<string>() : "";
                 betaDialogueSequence.text = dialogue["text"].Value<string>();
-                betaDialogueSequence.audio = dialogue.ContainsKey("audio") ? Convert.FromBase64String(dialogue["audio"].Value<string>()) : null;
+                if (dialogue.ContainsKey("audio"))
+                {
+                    JToken musicTok = dialogue["audio"].Value<JToken>();
+                    JObject musicObj = JObject.Load(musicTok.CreateReader());
+
+                    AudioByte audio = new AudioByte(Converters.StringToBytes(musicObj["data"].Value<string>()), musicObj["type"].Value<string>());
+                    betaDialogueSequence.audio = audio;
+                }
+                // = dialogue.ContainsKey("audio") ? Converters.StringToBytes(dialogue["audio"].Value<string>()) : null;
                 betaDialogueSequence.autoSkip = dialogue["autoSkip"].Value<bool>();
                 betaDialogueSequence.background = dialogue.ContainsKey("background") ? dialogue["background"].Value<string>() : "";
                 betaDialogueSequence.foreground = dialogue.ContainsKey("foreground") ? dialogue["foreground"].Value<string>() : "";
@@ -271,7 +287,12 @@ namespace Rabbyte
             if (value.music != null)
             {
                 writer.WritePropertyName("music");
-                writer.WriteValue(value.music);
+                writer.WriteStartObject();
+                    writer.WritePropertyName("data");
+                    writer.WriteValue(value.music.data);
+                    writer.WritePropertyName("type");
+                    writer.WriteValue(value.music.type);
+                writer.WriteEndObject();
             }
 
             writer.WritePropertyName("lines");
@@ -293,7 +314,13 @@ namespace Rabbyte
                 if(dialogue.audio != null)
                 {
                     writer.WritePropertyName("audio");
-                    writer.WriteValue(dialogue.audio);
+                        writer.WriteStartObject();
+                        writer.WritePropertyName("data");
+                        writer.WriteValue(dialogue.audio.data);
+                        writer.WritePropertyName("type");
+                        writer.WriteValue(dialogue.audio.type);
+                    writer.WriteEndObject();
+                    //writer.WriteValue(dialogue.audio);
                 }
 
                 writer.WritePropertyName("id");

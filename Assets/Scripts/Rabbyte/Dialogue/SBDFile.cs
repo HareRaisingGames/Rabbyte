@@ -156,7 +156,7 @@ namespace Rabbyte
         public string displayName;
         public string? description;
 
-        public byte[] music = null;
+        public AudioByte music = null;
 
         public SimpleSBDFile(bool load = false) : base()
         {
@@ -330,7 +330,7 @@ namespace Rabbyte
                 if (curLine != null) curLine.text = value;
             }
         }
-        public byte[] audio
+        public AudioByte audio
         {
             get
             {
@@ -445,7 +445,7 @@ namespace Rabbyte
                 return false;
             if(music != null || otherFile.music != null)
             {
-                if (!music.SequenceEqual(otherFile.music))
+                if (!music.data.SequenceEqual(otherFile.music.data))
                     return false;
             }
 
@@ -538,7 +538,7 @@ namespace Rabbyte
         //Text line for each dialogue
         public string name;
         public string text;
-        public byte[] audio = null;
+        public AudioByte audio = null;
         public int id;
 
         public string minigame = "";
