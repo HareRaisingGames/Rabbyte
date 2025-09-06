@@ -353,6 +353,18 @@ namespace Rabbyte
             }
         }
 
+        public string minigame
+        {
+            get
+            {
+                return curLine != null ? curLine.minigame : "";
+            }
+            set
+            {
+                if (curLine != null) curLine.minigame = value;
+            }
+        }
+
         public int id => curLine != null ? curLine.id : -1;
 
         public List<CharacterPack> characterPack
@@ -400,13 +412,14 @@ namespace Rabbyte
             lines.Add(dialogue);
         }
 
-        public void InsertLineByValues(int id, string name = "", string text = "", string background = "", bool autoplay = false)
+        public void InsertLineByValues(int id, string name = "", string text = "", string background = "", string minigame = "", bool autoplay = false)
         {
             BetaDialogueSequence dialogue = new BetaDialogueSequence(id);
             dialogue.name = name;
             dialogue.text = text;
             dialogue.background = background;
             dialogue.autoSkip = autoplay;
+            dialogue.minigame = minigame;
             lines.Insert(id, dialogue);
             for(int i = id + 1; i < lines.Count(); i++)
             {
