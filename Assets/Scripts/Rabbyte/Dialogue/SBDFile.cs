@@ -408,6 +408,10 @@ namespace Rabbyte
             dialogue.background = background;
             dialogue.autoSkip = autoplay;
             lines.Insert(id, dialogue);
+            for(int i = id; i < lines.Count(); i++)
+            {
+                lines[i].id = i;
+            }
         }
 
         public void RemoveLineAtIndex(int i)
