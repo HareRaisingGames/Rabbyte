@@ -177,7 +177,12 @@ namespace Rabbyte
             if (!Directory.Exists(audioDir))
                 Directory.CreateDirectory(audioDir);
             if(folder != "")
-                File.WriteAllBytes($"{Path.Combine(audioDir,folder,filename)}", bytes);
+            {
+                if (!Directory.Exists(Path.Combine(audioDir, folder)))
+                    Directory.CreateDirectory(Path.Combine(audioDir, folder));
+
+                File.WriteAllBytes($"{Path.Combine(audioDir, folder, filename)}", bytes);
+            }
             else
                 File.WriteAllBytes($"{Path.Combine(audioDir,filename)}", bytes);
         }
