@@ -460,11 +460,17 @@ namespace Rabbyte
                 return false;
             if (volume != otherFile.volume)
                 return false;
-            if(music != null || otherFile.music != null)
+            if(music != null && otherFile.music != null)
             {
                 if (!music.data.SequenceEqual(otherFile.music.data))
                     return false;
+                if (music.type != otherFile.music.type)
+                    return false;
+                if (music.name != otherFile.music.name)
+                    return false;
             }
+            else if ((music == null && otherFile.music != null) || (music != null && otherFile.music == null))
+                return false;
 
             bool equalBackgrounds = backgrounds.Count == otherFile.GetBackgrounds().Count && !backgrounds.Except(otherFile.GetBackgrounds()).Any();
             if (!equalBackgrounds)
@@ -581,8 +587,6 @@ namespace Rabbyte
                 return false;
             if (text != copyDialogue.text)
                 return false;
-            if (audio != copyDialogue.audio)
-                return false;
             if (background != copyDialogue.background)
                 return false;
             if (foreground != copyDialogue.foreground)
@@ -590,6 +594,18 @@ namespace Rabbyte
             if (autoSkip != copyDialogue.autoSkip)
                 return false;
             if (minigame != copyDialogue.minigame)
+                return false;
+
+            if (audio != null && copyDialogue.audio != null)
+            {
+                if (!audio.data.SequenceEqual(copyDialogue.audio.data))
+                    return false;
+                if (audio.type != copyDialogue.audio.type)
+                    return false;
+                if (audio.name != copyDialogue.audio.name)
+                    return false;
+            }
+            else if ((audio == null && copyDialogue.audio != null) || (audio != null && copyDialogue.audio == null))
                 return false;
 
             if (characters.Count != copyDialogue.characters.Count)
