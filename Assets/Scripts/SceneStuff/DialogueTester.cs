@@ -88,12 +88,15 @@ public class DialogueTester : MonoBehaviour
                     //Debug.Log(audioData);
                     /*AudioSource audio = new GameObject("Audio").AddComponent<AudioSource>();
                     
-                    AudioClip clip = Converters.ByteToAudioClip(bytes);
+                     = Converters.ByteToAudioClip(bytes);
                     Debug.Log(clip);
                     audio.clip = clip;
                     audio.Play();*/
                     AudioByte bytes = new AudioByte(paths[0]);
                     StarbornFileHandler.CacheAudio(bytes.name, bytes.data);
+                    AudioSource audio = new GameObject("Audio").AddComponent<AudioSource>();
+                    audio.clip = await AudioUtils.LoadClip(bytes);
+                    audio.Play();
                 }
                 catch (System.Exception e)
                 {

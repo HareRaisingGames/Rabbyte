@@ -14,7 +14,7 @@ namespace Rabbyte
         static readonly string tempDir = Path.Combine(Application.temporaryCachePath, "SBCache");
         static readonly string treeDir = Path.Combine(tempDir, "Current");
         static readonly string resourcesDir = Path.Combine(treeDir, "Resources");
-        static readonly string audioDir = Path.Combine(treeDir, "Music");
+        public static readonly string audioDir = Path.Combine(treeDir, "Audio");
         static readonly string charDir = Path.Combine(treeDir, "Characters");
         static readonly string dialogueDir = Path.Combine(treeDir, "Dialogue");
         static readonly string metadataDir = Path.Combine(treeDir, ".meta");
@@ -172,11 +172,14 @@ namespace Rabbyte
             ZipFile.CreateFromDirectory(dialogueDir, destPath, System.IO.Compression.CompressionLevel.Optimal, false);
         }
 
-        public static void CacheAudio(string filename, byte[] bytes)
+        public static void CacheAudio(string filename, byte[] bytes, string folder = "")
         {
             if (!Directory.Exists(audioDir))
                 Directory.CreateDirectory(audioDir);
-            File.WriteAllBytes($"{audioDir}\\{filename}", bytes);
+            if(folder != "")
+                File.WriteAllBytes($"{Path.Combine(audioDir,folder,filename)}", bytes);
+            else
+                File.WriteAllBytes($"{Path.Combine(audioDir,filename)}", bytes);
         }
     }
 }

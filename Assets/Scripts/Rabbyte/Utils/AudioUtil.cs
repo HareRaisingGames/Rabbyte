@@ -1,7 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 using System.IO;
+using System.Threading.Tasks;
+using Rabbyte;
+using System;
 
 public static class AudioUtils
 {
@@ -75,4 +79,32 @@ public static class AudioUtils
     /// * Figure out how to tell the audio file
     /// * Convert specific audio file
     ///</summary>
+    ///
+    public static async Task<AudioClip> LoadClip(AudioByte bytes)
+    {
+        AudioClip clip = null;
+        string path = Path.Combine(StarbornFileHandler.audioDir, bytes.name);
+        AudioType type = (AudioType)System.Enum.Parse(typeof(AudioType), bytes.type);
+        using (UnityWebRequest request = UnityWebRequestMultimedia.GetAudioClip(path, type))
+        {
+            request.SendWebRequest();
+            try
+            {
+                while (!request.isDone) await Task.Delay(5);
+
+                if (request.isNetworkError || request.isHttpError) Debug.Log($"{request.error}");
+                else
+                {
+                    clip = DownloadHandlerAudioClip.GetContent(request);
+                    clip.name = bytes.name.Remove(bytes.name.Length - 4);
+                }
+            }
+            catch (Exception err)
+            {
+                Debug.Log($"{err.Message}, {err.StackTrace}");
+            }
+        }
+
+        return clip;
+    }
 }
