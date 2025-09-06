@@ -80,10 +80,11 @@ public static class AudioUtils
     /// * Convert specific audio file
     ///</summary>
     ///
-    public static async Task<AudioClip> LoadClip(AudioByte bytes)
+    static async Task<AudioClip> LoadClip(AudioByte bytes, string folder = "")
     {
         AudioClip clip = null;
-        string path = Path.Combine(StarbornFileHandler.audioDir, bytes.name);
+        string path = folder != "" ? Path.Combine(StarbornFileHandler.audioDir, folder, bytes.name) 
+            : Path.Combine(StarbornFileHandler.audioDir, bytes.name);
         AudioType type = (AudioType)System.Enum.Parse(typeof(AudioType), bytes.type);
         using (UnityWebRequest request = UnityWebRequestMultimedia.GetAudioClip(path, type))
         {
@@ -105,6 +106,27 @@ public static class AudioUtils
             }
         }
 
+        return clip;
+    }
+
+    public static async Task<AudioClip> LoadMusic(AudioByte bytes)
+    {
+        StarbornFileHandler.CacheAudio(bytes.name, bytes.data, "Music");
+        AudioClip clip = await LoadClip(bytes, "Music");
+        return clip;
+    }
+
+    public static async Task<AudioClip> LoadDialogue(AudioByte bytes)
+    {
+        StarbornFileHandler.CacheAudio(bytes.name, bytes.data, "Dialogue");
+        AudioClip clip = await LoadClip(bytes, "Dialogue");
+        return clip;
+    }
+
+    public static async Task<AudioClip> LoadSFX(AudioByte bytes)
+    {
+        StarbornFileHandler.CacheAudio(bytes.name, bytes.data, "SFX");
+        AudioClip clip = await LoadClip(bytes, "SFX");
         return clip;
     }
 }
