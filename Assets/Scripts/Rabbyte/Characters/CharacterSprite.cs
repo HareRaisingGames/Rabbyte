@@ -9,6 +9,7 @@ namespace Rabbyte
     {
         SBCFile _character;
         Vector2 spriteSize;
+        float _offset;
         string _expression;
         bool _flipX;
 
@@ -34,7 +35,7 @@ namespace Rabbyte
                 spriteSize = rectTransform.sizeDelta;
                 rectTransform.sizeDelta = spriteSize * _character.GetEmotionByName(value).scale;
                 rectTransform.eulerAngles = new Vector3(0, _flipX ? 180 : 0, 0);
-                rectTransform.anchoredPosition = new Vector2(_position.x + offset[0], _position.y + offset[1]);
+                rectTransform.anchoredPosition = new Vector2(_position.x + offset[0] + _offset, _position.y + offset[1]);
             }
         }
 
@@ -43,7 +44,7 @@ namespace Rabbyte
             set
             {
                 _position = value;
-                rectTransform.anchoredPosition = new Vector2(_position.x + offset[0], _position.y + offset[1]);
+                rectTransform.anchoredPosition = new Vector2(_position.x + offset[0] + _offset, _position.y + offset[1]);
             }
         }
 
@@ -52,6 +53,15 @@ namespace Rabbyte
             get
             {
                 return _character.GetEmotionByName(_expression).offset;
+            }
+        }
+
+        public float xOffset
+        {
+            set
+            {
+                _offset = value;
+                rectTransform.anchoredPosition = new Vector2(_position.x + offset[0] + _offset, _position.y + offset[1]);
             }
         }
 
