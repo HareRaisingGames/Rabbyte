@@ -11,6 +11,7 @@ namespace Rabbyte
         Vector2 spriteSize;
         int[] _offset;
         string _expression;
+        bool _flipX;
         public SBCFile character
         {
             set
@@ -31,6 +32,7 @@ namespace Rabbyte
                 SetNativeSize();
                 spriteSize = rectTransform.sizeDelta;
                 rectTransform.sizeDelta = spriteSize * _character.GetEmotionByName(value).scale;
+                rectTransform.eulerAngles = new Vector3(0, _flipX ? 180 : 0, 0);
             }
         }
 
@@ -39,6 +41,15 @@ namespace Rabbyte
             get
             {
                 return _character.GetEmotionByName(_expression).offset;
+            }
+        }
+
+        public bool flipX
+        {
+            set
+            {
+                this.rectTransform.eulerAngles = new Vector3(0, value ? 180 : 0, 0);
+                _flipX = value;
             }
         }
         public CharacterSprite(SBCFile character)
