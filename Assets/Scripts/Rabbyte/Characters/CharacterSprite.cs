@@ -35,6 +35,7 @@ namespace Rabbyte
                 spriteSize = rectTransform.sizeDelta;
                 rectTransform.sizeDelta = spriteSize * _character.GetEmotionByName(value).scale;
                 rectTransform.eulerAngles = new Vector3(0, _flipX ? 180 : 0, 0);
+                rectTransform.anchoredPosition = new Vector2(_position.x + _offset[0], _position.y + _offset[1]);
             }
         }
 
