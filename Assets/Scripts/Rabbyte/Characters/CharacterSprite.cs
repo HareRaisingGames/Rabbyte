@@ -12,6 +12,8 @@ namespace Rabbyte
         int[] _offset;
         string _expression;
         bool _flipX;
+
+        Vector2 _position;
         public SBCFile character
         {
             set
@@ -36,10 +38,20 @@ namespace Rabbyte
             }
         }
 
+        public Vector2 position
+        {
+            set
+            {
+                _position = value;
+                rectTransform.anchoredPosition = new Vector2(_position.x + _offset[0], _position.y + _offset[1]);
+            }
+        }
+
         public int[] offset
         {
             get
             {
+                _offset = _character.GetEmotionByName(_expression).offset;
                 return _character.GetEmotionByName(_expression).offset;
             }
         }
