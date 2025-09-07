@@ -198,7 +198,7 @@ namespace Rabbyte
                         charPack.alignment = (Alignment)System.Enum.Parse(typeof(Alignment), pack["alignment"].Value<string>());
                         charPack.offset = pack.ContainsKey("offset") ? pack["offset"].Value<float>() : 0;
                         charPack.flipX = pack["flipX"].Value<bool>();
-                        charPack.flipX = pack["isSpeaking"].Value<bool>();
+                        charPack.isSpeaking = pack["isSpeaking"].Value<bool>();
 
                         betaDialogueSequence.characters.Add(charPack);
                     }
@@ -269,8 +269,11 @@ namespace Rabbyte
                 writer.WriteValue(value.volume);
             }
 
-            writer.WritePropertyName("chapter");
-            writer.WriteValue(value.chapter);
+            if (value.chapter.HasValue)
+            {
+                writer.WritePropertyName("chapter");
+                writer.WriteValue(value.chapter);
+            }
 
             writer.WritePropertyName("displayName");
             writer.WriteValue(value.displayName);
