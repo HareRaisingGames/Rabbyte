@@ -118,7 +118,7 @@ namespace Rabbyte
             }
 
             file.volume = obj.ContainsKey("volume") ? obj["volume"].Value<int>() : 0;
-            file.chapter = obj["chapter"].Value<int>();
+            file.chapter = obj.ContainsKey("chapter") ? obj["chapter"].Value<int>() : 0;
             if(obj.ContainsKey("music"))
             {
                 JToken musicTok = obj["music"].Value<JToken>();
