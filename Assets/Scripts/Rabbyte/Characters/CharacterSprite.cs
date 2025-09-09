@@ -41,6 +41,10 @@ namespace Rabbyte
 
         public Vector2 position
         {
+            get
+            {
+                return _position;
+            }
             set
             {
                 _position = value;
