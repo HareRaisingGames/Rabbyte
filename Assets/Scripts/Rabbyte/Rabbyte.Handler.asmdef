@@ -1,3 +1,16 @@
 {
-	"name": "Rabbyte.Handler"
+    "name": "Rabbyte.Handler",
+    "rootNamespace": "",
+    "references": [
+        "GUID:dc80fce2614efd64585f0655fbb0e465"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

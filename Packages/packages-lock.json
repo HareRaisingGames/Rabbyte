@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.hareraisinggames.gyotoku": {
+      "version": "https://github.com/HareRaisingGames/Gyotoku.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "72afb7967967730d28b9dabc6da0a595c3fb60cc"
+    },
     "com.unity.2d.animation": {
       "version": "9.1.1",
       "depth": 1,
