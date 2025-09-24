@@ -12,6 +12,7 @@
     "starborn"
   ],
   "dependencies": {
+    "com.toxicbloud.moonsharp": "2.0.0",
     "com.unity.nuget.newtonsoft-json": "3.2.1"
   },
   "author": {
