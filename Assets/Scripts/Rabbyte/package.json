@@ -13,7 +13,7 @@
   ],
   "dependencies": {
     "com.unity.nuget.newtonsoft-json": "3.2.1",
-    "com.hareraisinggames.gyotoku": "2.0.0"
+    "com.hareraisinggames.gyotoku": "https://github.com/HareRaisingGames/Gyotoku.git"
   },
   "author": {
     "name": "Dancetrap",
