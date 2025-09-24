@@ -1,11 +1,11 @@
 {
   "dependencies": {
-    "com.hareraisinggames.gyotoku": {
-      "version": "https://github.com/HareRaisingGames/Gyotoku.git",
+    "com.toxicbloud.moonsharp": {
+      "version": "2.0.0",
       "depth": 0,
-      "source": "git",
+      "source": "registry",
       "dependencies": {},
-      "hash": "72afb7967967730d28b9dabc6da0a595c3fb60cc"
+      "url": "https://package.openupm.com"
     },
     "com.unity.2d.animation": {
       "version": "9.1.1",
