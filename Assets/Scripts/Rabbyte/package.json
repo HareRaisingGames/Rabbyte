@@ -12,8 +12,7 @@
     "starborn"
   ],
   "dependencies": {
-    "com.unity.nuget.newtonsoft-json": "3.2.1",
-    "com.hareraisinggames.gyotoku": "https://github.com/HareRaisingGames/Gyotoku.git"
+    "com.unity.nuget.newtonsoft-json": "3.2.1"
   },
   "author": {
     "name": "Dancetrap",
