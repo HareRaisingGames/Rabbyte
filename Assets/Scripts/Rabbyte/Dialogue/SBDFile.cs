@@ -14,6 +14,7 @@ namespace Rabbyte
         protected Dictionary<string, byte[]> foregrounds = new Dictionary<string, byte[]>();
         protected List<string> characters = new List<string>();
 
+
         //If a user is going to edit the dialogue, how will the characters be brought back? I fear that using a dictionary is just going to make the file way too big
         //protected Dictionary<string, SBCFile> characters = new Dictionary<string, SBCFile>();
 
@@ -145,6 +146,9 @@ namespace Rabbyte
 
         //If a user is going to edit the dialogue, how will the characters be brought back? I fear that using a dictionary is just going to make the file way too big
         protected Dictionary<string, List<Emotion>> characters = new Dictionary<string, List<Emotion>>();
+        
+        //This will primarly be used to call via Lua
+        protected Dictionary<string, AudioByte> soundEffects = new Dictionary<string, AudioByte>();
 
         //public List<DialogueSequence> lines = new List<DialogueSequence>();
 
