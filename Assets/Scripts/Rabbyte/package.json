@@ -13,7 +13,7 @@
   ],
   "dependencies": {
     "com.unity.nuget.newtonsoft-json": "3.2.1",
-    "moonsharp": "https://github.com/k0dep/MoonSharp.git"
+    "moonsharp": "https://github.com/k0dep/MoonSharp.git#2.0.0"
   },
   "author": {
     "name": "Dancetrap",
