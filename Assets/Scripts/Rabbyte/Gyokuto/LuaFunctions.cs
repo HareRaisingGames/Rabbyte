@@ -93,27 +93,31 @@ namespace Rabbyte.Gyotoku
         }
 
         /// <summary>
-        /// Adds a global parameter to MoonSharp
+        /// Adds a global parameter to MoonSharp: WARNING - API Level must be set to .NET Framework 
         /// </summary>
         /// <param name="name">The string name for the global parameter</param>
         /// <param name="value">The value of the global</param>
+#if NET_4_6
         public static void AddGlobal(string name, dynamic value)
         {
+
             bool containsValue()
             {
                 foreach (KeyValuePair<string, dynamic> global in globals)
                 {
+
                     if (global.Value.Equals(value))
                         return true;
+                    
                 }
                 return false;
             };
 
             if (!globals.ContainsKey(name) && !containsValue())
                 globals.Add(name, value);
-
             AddGlobals();
         }
+#endif
 
         static List<Type> types = new List<Type>() {
             typeof(MonoBehaviour),
@@ -146,7 +150,7 @@ namespace Rabbyte.Gyotoku
                 UserData.RegisterType(type);
         }
 
-        #endregion
+#endregion
 
         static LuaFunctions()
         {
