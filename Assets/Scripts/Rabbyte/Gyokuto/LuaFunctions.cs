@@ -80,7 +80,10 @@ namespace Rabbyte.Gyotoku
         /// </summary>
 
         #region Meta
-        static Dictionary<string, dynamic> globals = new Dictionary<string, dynamic>();
+        static Dictionary<string, dynamic> globals = new Dictionary<string, dynamic>()
+        {
+            { "Shake",  (Action<float, float, GameObject>)ShakeScreen }
+        };
         static void AddGlobals()
         {
             foreach(KeyValuePair<string, dynamic> global in globals)
@@ -151,9 +154,6 @@ namespace Rabbyte.Gyotoku
             foreach(Type type in types)
                 UserData.RegisterType(type);
             AddGlobals();
-
-            script.Globals["Shake"] = (Action<float, float, GameObject>)ShakeScreen;
-            //Script.GlobalOptions.CustomConverters.SetScriptToClrCustomConversion(DataType.Void, typeof(GameObject));
         }
 
         public static IEnumerator Shake(float duration, float magnitude, GameObject obj)
@@ -167,8 +167,6 @@ namespace Rabbyte.Gyotoku
             }
 
             float elapsed = 0.0f;
-
-            Debug.Log(ui);
 
             while(elapsed < duration)
             {
