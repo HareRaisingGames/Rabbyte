@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MoonSharp.Interpreter;
-using Rabbyte;
 using System;
+using System.Linq;
 
 namespace Rabbyte.Gyotoku
 {
@@ -80,12 +80,36 @@ namespace Rabbyte.Gyotoku
         /// </summary>
 
         #region Meta
+        static Dictionary<string, dynamic> globals = new Dictionary<string, dynamic>();
         static void AddGlobals()
         {
             foreach(KeyValuePair<string, dynamic> global in globals)
             {
                 script.Globals[global.Key] = global.Value;
             }
+        }
+
+        /// <summary>
+        /// Adds a global parameter to MoonSharp
+        /// </summary>
+        /// <param name="name">The string name for the global parameter</param>
+        /// <param name="value">The value of the global</param>
+        public static void AddGlobal(string name, dynamic value)
+        {
+            bool containsValue()
+            {
+                foreach (KeyValuePair<string, dynamic> global in globals)
+                {
+                    if (global.Value.Equals(value))
+                        return true;
+                }
+                return false;
+            };
+
+            if (!globals.ContainsKey(name) && !containsValue())
+                globals.Add(name, value);
+
+            AddGlobals();
         }
 
         static List<Type> types = new List<Type>() {
@@ -105,45 +129,32 @@ namespace Rabbyte.Gyotoku
             foreach (Type type in types)
                 UserData.RegisterType(type);
         }
+
         /// <summary>
-        /// Adds a global parameter to MoonSharp
+        /// Adds a list of class types MoonSharp and filters out any duplicate classes.
         /// </summary>
-        /// <param name="name">The string name for the global parameter</param>
-        /// <param name="value">The value of the global</param>
-        public static void AddGlobal(string name, dynamic value)
+        /// <param name="tList">A list of types</param>
+        public static void AddTypesToRegisteration(List<Type> tList)
         {
-            bool containsValue(){
-                foreach(KeyValuePair<string, dynamic> global in globals)
-                {
-                    if (global.Value.Equals(value))
-                        return true;
-                }
-                return false;
-            };
-
-            if (!globals.ContainsKey(name) && !containsValue())
-                globals.Add(name, value);
-
-            AddGlobals();
+            List<Type> selfMerge = tList.Union(tList).ToList();
+            List<Type> uniqueList = selfMerge.Union(types).ToList();
+            types.AddRange(uniqueList);
+            foreach (Type type in types)
+                UserData.RegisterType(type);
         }
+
         #endregion
 
         static LuaFunctions()
         {
-            if(script != null)
-                script = new Script();
-
+            script = new Script();
             foreach(Type type in types)
                 UserData.RegisterType(type);
             AddGlobals();
 
-
-
             script.Globals["Shake"] = (Action<float, float, GameObject>)ShakeScreen;
             //Script.GlobalOptions.CustomConverters.SetScriptToClrCustomConversion(DataType.Void, typeof(GameObject));
         }
-
-        static Dictionary<string, dynamic> globals = new Dictionary<string, dynamic>();
 
         public static IEnumerator Shake(float duration, float magnitude, GameObject obj)
         {
