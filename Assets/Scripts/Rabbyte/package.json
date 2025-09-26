@@ -11,6 +11,15 @@
     "rhythm",
     "starborn"
   ],
+  "scopedRegistries": [
+    {
+      "name": "package.openupm.com",
+      "url": "https://package.openupm.com",
+      "scopes": [
+        "com.toxicbloud.moonsharp"
+      ]
+    }
+  ],
   "dependencies": {
     "com.toxicbloud.moonsharp": "2.0.0",
     "com.unity.nuget.newtonsoft-json": "3.2.1"
