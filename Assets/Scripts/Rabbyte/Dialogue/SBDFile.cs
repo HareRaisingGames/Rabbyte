@@ -369,6 +369,42 @@ namespace Rabbyte
             }
         }
 
+        public string onStart
+        {
+            get
+            {
+                return curLine != null ? curLine.onStart : "";
+            }
+            set
+            {
+                if (curLine != null) curLine.onStart = value;
+            }
+        }
+
+        public string onEnd
+        {
+            get
+            {
+                return curLine != null ? curLine.onEnd : "";
+            }
+            set
+            {
+                if (curLine != null) curLine.onEnd = value;
+            }
+        }
+
+        public string onWord
+        {
+            get
+            {
+                return curLine != null ? curLine.onWord : "";
+            }
+            set
+            {
+                if (curLine != null) curLine.onWord = value;
+            }
+        }
+
         public int id => curLine != null ? curLine.id : -1;
 
         public List<CharacterPack> characterPack
@@ -578,6 +614,10 @@ namespace Rabbyte
         public List<CharacterPack> characters = new List<CharacterPack>();
 
         public bool autoSkip = false;
+
+        public string onStart;
+        public string onEnd;
+        public string onWord;
 
 
         public BetaDialogueSequence(int id)

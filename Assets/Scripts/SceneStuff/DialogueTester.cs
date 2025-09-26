@@ -10,6 +10,7 @@ using System.IO.Compression;
 using SFB;
 using UnityEngine.Networking;
 using System.Linq;
+using Rabbyte.Gyotoku;
 
 public class DialogueTester : MonoBehaviour
 {
@@ -18,6 +19,8 @@ public class DialogueTester : MonoBehaviour
     public Image charImage;
     public SimpleSBDFile file = new();
 
+    public GameObject cube;
+
     List<string> bgFileNames = new List<string>();
     // Start is called before the first frame update
     void Start()
@@ -25,12 +28,19 @@ public class DialogueTester : MonoBehaviour
         //Debug.Log(Application.temporaryCachePath);
         foreach (KeyValuePair<string, List<Emotion>> character in file.GetCharacters())
             Debug.Log(character);
+
+        //LuaFunctions.DoShake(cube);
+
+        //LuaFunctions.ShakeScreen(2, 2, cube);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.Space))
+            LuaFunctions.DoShake(cube);
+            //LuaFunctions.ShakeScreen(2, 5, cube);
+            //StartCoroutine(LuaFunctions.Shake(2, 5, cube));
     }
 
     public void OpenWindows()
