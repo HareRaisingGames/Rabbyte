@@ -82,7 +82,7 @@ namespace Rabbyte.Gyotoku
         #region Meta
         static Dictionary<string, dynamic> globals = new Dictionary<string, dynamic>()
         {
-            { "Shake",  (Action<float, float, GameObject>)ShakeScreen }
+            { "Shake",  (Action<float, float, GameObject>)LuaMethods.ShakeScreen }
         };
         static void AddGlobals()
         {
@@ -91,30 +91,18 @@ namespace Rabbyte.Gyotoku
                 script.Globals[global.Key] = global.Value;
             }
         }
-
+#if NET_4_6
         /// <summary>
         /// Adds a global parameter to MoonSharp: WARNING - API Level must be set to .NET Framework 
         /// </summary>
         /// <param name="name">The string name for the global parameter</param>
         /// <param name="value">The value of the global</param>
-#if NET_4_6
         public static void AddGlobal(string name, dynamic value)
         {
-
-            bool containsValue()
-            {
-                foreach (KeyValuePair<string, dynamic> global in globals)
-                {
-
-                    if (global.Value.Equals(value))
-                        return true;
-                    
-                }
-                return false;
-            };
-
-            if (!globals.ContainsKey(name) && !containsValue())
+            if (!globals.ContainsKey(name))
                 globals.Add(name, value);
+            else
+                globals[name] = value;
             AddGlobals();
         }
 #endif
@@ -158,55 +146,6 @@ namespace Rabbyte.Gyotoku
             foreach(Type type in types)
                 UserData.RegisterType(type);
             AddGlobals();
-        }
-
-        public static IEnumerator Shake(float duration, float magnitude, GameObject obj)
-        {
-            bool ui = false;
-            Vector3 originalPos = obj.transform.localPosition;
-            if(obj.GetComponent<RectTransform>() != null)
-            {
-                ui = true;
-                originalPos = obj.GetComponent<RectTransform>().anchoredPosition;
-            }
-
-            float elapsed = 0.0f;
-
-            while(elapsed < duration)
-            {
-                if(ui)
-                {
-                    float offsetX = Mathf.Sin(Time.time * UnityEngine.Random.Range(-1f, 1f)) * magnitude;
-                    float offsetY = Mathf.Cos(Time.time * UnityEngine.Random.Range(-1f, 1f)) * magnitude; // Slightly different speed for y-axis
-
-                    obj.GetComponent<RectTransform>().anchoredPosition = originalPos + new Vector3(offsetX, offsetY, 0);
-                }
-                else
-                {
-                    float x = UnityEngine.Random.Range(-1f, 1f) * magnitude;
-                    float y = UnityEngine.Random.Range(-1f, 1f) * magnitude;
-
-                    obj.transform.localPosition = new Vector3(x, y, originalPos.z);
-                }
-
-                
-
-                elapsed += Time.deltaTime;
-
-                yield return null;
-            }
-
-            if(ui)
-                obj.GetComponent<RectTransform>().anchoredPosition = originalPos;
-            else
-                obj.transform.localPosition = originalPos;
-        }
-
-        public static void ShakeScreen(float duration, float magnitude, GameObject obj)
-        {
-            IEnumerator shake = Shake(duration, magnitude, obj);
-            UnityEngine.Object.FindObjectOfType<MonoBehaviour>().StartCoroutine(shake);
-            //while (shake.MoveNext());
         }
     }
 }
