@@ -158,6 +158,7 @@ namespace Rabbyte.Gyotoku
             foreach(Type type in types)
                 UserData.RegisterType(type);
             AddGlobals();
+            LuaMethods.Load();
         }
     }
 }

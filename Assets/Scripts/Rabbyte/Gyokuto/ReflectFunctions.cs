@@ -15,6 +15,13 @@ public static partial class LuaMethods
         {"alpha", "color.a" }
     };
 
+    readonly static Dictionary<string, string> altKeyCodes = new Dictionary<string, string>()
+    {
+        {"x", "GetComponent<RectTransform>().anchoredPosition.x"},
+        {"y", "GetComponent<RectTransform>().anchoredPosition.y" },
+        {"alpha", "color.a" }
+    };
+
 #if NET_4_6
     /// <summary>
     /// Get the value of an object via string
@@ -53,5 +60,10 @@ public static partial class LuaMethods
     static LuaMethods()
     {
         LuaFunctions.AddGlobalList(globals);
+    }
+
+    public static void Load()
+    {
+
     }
 }
