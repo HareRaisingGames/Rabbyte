@@ -22,6 +22,7 @@ namespace Rabbyte
                 if(_character.expressions.Count != 0) expression = _character.expressions[0].expression;
             }
         }
+        public string charName => _character.filename;
         public string expression
         {
             set
@@ -76,6 +77,15 @@ namespace Rabbyte
                 this.rectTransform.eulerAngles = new Vector3(0, value ? 180 : 0, 0);
                 _flipX = value;
             }
+        }
+
+        public bool ExpressionExists(string expression)
+        {
+            foreach(Emotion emotion in _character.expressions)
+            {
+                if (emotion.expression == expression) return true;
+            }
+            return false;
         }
         public CharacterSprite(SBCFile character)
         {

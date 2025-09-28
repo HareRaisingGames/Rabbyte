@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static partial class LuaMethods
 {
-    public static IEnumerator Shake(float duration, float magnitude, GameObject obj)
+    static IEnumerator Shake(float duration, float magnitude, GameObject obj)
     {
         bool ui = false;
         Vector3 originalPos = obj.transform.localPosition;
@@ -59,9 +59,4 @@ public static partial class LuaMethods
         UnityEngine.Object.FindObjectOfType<MonoBehaviour>().StartCoroutine(shake);
         //while (shake.MoveNext());
     }
-}
-
-public static partial class LuaMethods
-{
-
 }

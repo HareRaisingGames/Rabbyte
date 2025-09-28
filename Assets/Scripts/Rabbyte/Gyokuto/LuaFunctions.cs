@@ -105,6 +105,18 @@ namespace Rabbyte.Gyotoku
                 globals[name] = value;
             AddGlobals();
         }
+
+        public static void AddGlobalList(Dictionary<string, dynamic> list)
+        {
+            foreach(KeyValuePair<string, dynamic> obj in list)
+            {
+                if (!globals.ContainsKey(obj.Key))
+                    globals.Add(obj.Key, obj.Value);
+                else
+                    globals[obj.Key] = obj.Value;
+            }
+            AddGlobals();
+        }
 #endif
 
         static List<Type> types = new List<Type>() {
