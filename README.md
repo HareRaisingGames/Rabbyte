@@ -3,6 +3,7 @@ A Parser and Serializer for the custom SBD dialogue files
 
 ## Includes
 * Parser and Serializer methods for dialogue (sbd) and character files (sbc)
+* Lua Functionality
 
 ## Installation Instructions
 Go to Package Manager, click on the +, click on "Add package from git URL" and enter in the follow
