@@ -185,6 +185,7 @@ namespace Rabbyte
                 betaDialogueSequence.autoSkip = dialogue["autoSkip"].Value<bool>();
                 betaDialogueSequence.background = dialogue.ContainsKey("background") ? dialogue["background"].Value<string>() : "";
                 betaDialogueSequence.foreground = dialogue.ContainsKey("foreground") ? dialogue["foreground"].Value<string>() : "";
+                betaDialogueSequence.minigame = dialogue.ContainsKey("minigame") ? dialogue["minigame"].Value<string>() : "";
 
                 if (dialogue.ContainsKey("characters"))
                 {
@@ -343,6 +344,12 @@ namespace Rabbyte
                 {
                     writer.WritePropertyName("foreground");
                     writer.WriteValue(dialogue.foreground);
+                }
+
+                if (!string.IsNullOrEmpty(dialogue.minigame))
+                {
+                    writer.WritePropertyName("minigame");
+                    writer.WriteValue(dialogue.minigame);
                 }
 
                 writer.WritePropertyName("autoSkip");
