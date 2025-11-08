@@ -196,11 +196,12 @@ namespace Rabbyte
                         JObject pack = JObject.Load(character.CreateReader());
                         charPack.character = pack["character"].Value<string>();
                         charPack.emotion = pack["expression"].Value<string>();
-                        charPack.alignment = (Alignment)System.Enum.Parse(typeof(Alignment), pack["alignment"].Value<string>());
+                        charPack.alignment = (Alignment)Enum.Parse(typeof(Alignment), pack["alignment"].Value<string>());
                         charPack.offset = pack.ContainsKey("offset") ? pack["offset"].Value<float>() : 0;
                         charPack.flipX = pack["flipX"].Value<bool>();
                         charPack.isSpeaking = pack["isSpeaking"].Value<bool>();
-
+                        charPack.transition = 
+                            pack.ContainsKey("transition") ? (SpriteTransition)Enum.Parse(typeof(SpriteTransition), pack["transition"].Value<string>()) : SpriteTransition.None;
                         betaDialogueSequence.characters.Add(charPack);
                     }
                 }
@@ -377,6 +378,11 @@ namespace Rabbyte
                         writer.WriteValue(pack.flipX);
                         writer.WritePropertyName("isSpeaking");
                         writer.WriteValue(pack.isSpeaking);
+                        if(pack.transition != SpriteTransition.None)
+                        {
+                            writer.WritePropertyName("transition");
+                            writer.WriteValue(pack.transition.ToString());
+                        }
                         writer.WriteEndObject();
                     }
                     writer.WriteEndArray();

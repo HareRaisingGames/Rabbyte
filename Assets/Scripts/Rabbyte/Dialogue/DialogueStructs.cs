@@ -32,6 +32,7 @@ public struct CharacterPack
     public float offset;
     public bool flipX;
     public bool isSpeaking;
+    public SpriteTransition transition;
 }
 
 [System.Serializable]

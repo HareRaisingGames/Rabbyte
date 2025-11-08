@@ -49,9 +49,13 @@ namespace Rabbyte
             set
             {
                 _position = value;
+                _prevPosition = rectTransform.anchoredPosition;
                 rectTransform.anchoredPosition = new Vector2(_position.x + offset[0] + _offset, _position.y + offset[1]);
             }
         }
+
+        Vector2 _prevPosition;
+        public Vector2 prevPosition => _prevPosition;
 
         public int[] offset
         {
@@ -96,5 +100,18 @@ namespace Rabbyte
             base.Awake();
             color = Color.white;
         }
+    }
+
+    [System.Serializable]
+    public enum SpriteTransition
+    {
+        None,
+        Fade,
+        Right,
+        Left,
+        Vertical,
+        FadeLeft,
+        FadeRight,
+        FadeVertical
     }
 }
