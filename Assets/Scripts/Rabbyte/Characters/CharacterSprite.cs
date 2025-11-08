@@ -66,13 +66,10 @@ namespace Rabbyte
         }
         
         //This mainly applies to the editor
-        public float xOffset
+        public void SetXOffset(float value)
         {
-            set
-            {
-                _offset = value;
-                rectTransform.anchoredPosition = new Vector2(_position.x + offset[0] + _offset, _position.y + offset[1]);
-            }
+            _offset = value;
+            rectTransform.anchoredPosition = new Vector2(_position.x + offset[0] + _offset, _position.y + offset[1]);
         }
 
         public float offsetX
