@@ -64,13 +64,22 @@ namespace Rabbyte
                 return _character.GetEmotionByName(_expression).offset;
             }
         }
-
+        
+        //This mainly applies to the editor
         public float xOffset
         {
             set
             {
                 _offset = value;
                 rectTransform.anchoredPosition = new Vector2(_position.x + offset[0] + _offset, _position.y + offset[1]);
+            }
+        }
+
+        public float offsetX
+        {
+            set
+            {
+                _offset = value;
             }
         }
 
