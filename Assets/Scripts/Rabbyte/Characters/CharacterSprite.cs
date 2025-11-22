@@ -14,6 +14,8 @@ namespace Rabbyte
         bool _flipX;
 
         Vector2 _position;
+        [HideInInspector]
+        public bool isMoving;
         public SBCFile character
         {
             set
