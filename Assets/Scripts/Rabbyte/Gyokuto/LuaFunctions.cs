@@ -82,7 +82,8 @@ namespace Rabbyte.Gyotoku
         #region Meta
         static Dictionary<string, dynamic> globals = new Dictionary<string, dynamic>()
         {
-            { "Shake",  (Action<float, float, GameObject>)LuaMethods.ShakeScreen }
+            { "Shake",  (Action<float, float, GameObject>)LuaMethods.ShakeScreen },
+            { "SetCharacterExpression", (Action<string, string>)LuaMethods.SetExpressionToCharacter}
         };
         static void AddGlobals()
         {
