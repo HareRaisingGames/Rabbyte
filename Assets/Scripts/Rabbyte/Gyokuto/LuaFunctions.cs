@@ -36,11 +36,13 @@ namespace Rabbyte.Gyotoku
         /// </summary>
         public static void OnLineStart()
         {
+            script = new Script();
             string code = @$"
                 function onLineStart()
                     {_file.onStart}
                 end
             ";
+            Debug.Log("Sup?");
             script.DoString(code);
             script.Call(script.Globals["onLineStart"]);
         }
@@ -50,11 +52,13 @@ namespace Rabbyte.Gyotoku
         /// </summary>
         public static void OnLineEnd()
         {
+            script = new Script();
             string code = @$"
                 function onLineEnd()
                     {_file.onEnd}
                 end
             ";
+            Debug.Log("Sup?");
             script.DoString(code);
             script.Call(script.Globals["onLineEnd"]);
         }
@@ -65,6 +69,7 @@ namespace Rabbyte.Gyotoku
         /// <param name="i">The interval of the line</param>
         public static void OnLineInterval(int i)
         {
+            script = new Script();
             string code = @$"
                 function onLineInterval(num)
                     {_file.onWord}
@@ -158,7 +163,6 @@ namespace Rabbyte.Gyotoku
             script = new Script();
             foreach(Type type in types)
                 UserData.RegisterType(type);
-            Debug.Log("Sup?");
             AddGlobals();
             LuaMethods.Load();
         }
