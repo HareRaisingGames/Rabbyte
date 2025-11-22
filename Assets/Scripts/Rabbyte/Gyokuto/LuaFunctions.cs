@@ -36,7 +36,7 @@ namespace Rabbyte.Gyotoku
         /// </summary>
         public static void OnLineStart()
         {
-            Insert();
+            //Insert();
             string code = @$"
                 function onLineStart()
                     {_file.onStart}
@@ -53,7 +53,7 @@ namespace Rabbyte.Gyotoku
         /// </summary>
         public static void OnLineEnd()
         {
-            Insert();
+            //Insert();
             string code = @$"
                 function onLineEnd()
                     {_file.onEnd}
@@ -72,7 +72,7 @@ namespace Rabbyte.Gyotoku
         /// <param name="i">The interval of the line</param>
         public static void OnLineInterval(int i)
         {
-            Insert();
+            //Insert();
             string code = @$"
                 function onLineInterval(num)
                     {_file.onWord}
