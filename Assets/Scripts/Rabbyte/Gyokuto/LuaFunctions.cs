@@ -39,7 +39,7 @@ namespace Rabbyte.Gyotoku
             //Insert();
             string code = @$"
                 function onLineStart()
-                    {_file.onStart}
+                    {_file.curLine.onStart}
                 end
             ";
             //Debug.Log("Beginning");
@@ -56,7 +56,7 @@ namespace Rabbyte.Gyotoku
             //Insert();
             string code = @$"
                 function onLineEnd()
-                    {_file.onEnd}
+                    {_file.curLine.onEnd}
                 end
             ";
             //Debug.Log("End");
@@ -75,7 +75,7 @@ namespace Rabbyte.Gyotoku
             //Insert();
             string code = @$"
                 function onLineInterval(num)
-                    {_file.onWord}
+                    {_file.curLine.onWord}
                 end
             ";
             script.Globals["num"] = i;
