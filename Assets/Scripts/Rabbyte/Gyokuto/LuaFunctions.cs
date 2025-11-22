@@ -15,7 +15,7 @@ namespace Rabbyte.Gyotoku
             set
             {
                 _file = value;
-                script = new Script();
+                Insert();
             }
         }
 
