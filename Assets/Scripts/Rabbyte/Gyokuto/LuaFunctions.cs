@@ -59,7 +59,8 @@ namespace Rabbyte.Gyotoku
                     {_file.onEnd}
                 end
             ";
-            Debug.Log("End");
+            //Debug.Log("End");
+            Debug.Log(_file.onEnd);
             Debug.Log(code);
             script.DoString(code);
             script.Call(script.Globals["onLineEnd"]);
