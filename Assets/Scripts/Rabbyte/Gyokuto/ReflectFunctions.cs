@@ -66,4 +66,33 @@ public static partial class LuaMethods
     {
         LuaFunctions.AddGlobalList(globals);
     }
+
+    public static void AddGlobal(string name, dynamic dyn)
+    {
+        if (!globals.ContainsKey(name))
+            globals.Add(name, dyn);
+    }
+    public static void AddGlobal(GlobalDictionary dic)
+    {
+        if (!globals.ContainsKey(dic.name))
+            globals.Add(dic.name, dic.dyn);
+    }
+    public static void AddGlobal(List<GlobalDictionary> dics)
+    {
+        foreach(GlobalDictionary dic in dics)
+            if (!globals.ContainsKey(dic.name))
+                globals.Add(dic.name, dic.dyn);
+    }
+    public static void AddGlobal(Dictionary<string, dynamic> newGlobals)
+    {
+        foreach(KeyValuePair<string, dynamic> global in newGlobals)
+            if (!globals.ContainsKey(global.Key))
+                globals.Add(global.Key, global.Value);
+    }
+}
+
+public struct GlobalDictionary
+{
+    public string name;
+    public dynamic dyn;
 }
