@@ -36,13 +36,14 @@ namespace Rabbyte.Gyotoku
         /// </summary>
         public static void OnLineStart()
         {
-            script = new Script();
+            Insert();
             string code = @$"
                 function onLineStart()
                     {_file.onStart}
                 end
             ";
-            Debug.Log("Sup?");
+            Debug.Log("Beginning");
+            Debug.Log(code);
             script.DoString(code);
             script.Call(script.Globals["onLineStart"]);
         }
@@ -52,13 +53,14 @@ namespace Rabbyte.Gyotoku
         /// </summary>
         public static void OnLineEnd()
         {
-            script = new Script();
+            Insert();
             string code = @$"
                 function onLineEnd()
                     {_file.onEnd}
                 end
             ";
-            Debug.Log("Sup?");
+            Debug.Log("End");
+            Debug.Log(code);
             script.DoString(code);
             script.Call(script.Globals["onLineEnd"]);
         }
@@ -69,7 +71,7 @@ namespace Rabbyte.Gyotoku
         /// <param name="i">The interval of the line</param>
         public static void OnLineInterval(int i)
         {
-            script = new Script();
+            Insert();
             string code = @$"
                 function onLineInterval(num)
                     {_file.onWord}
@@ -160,8 +162,13 @@ namespace Rabbyte.Gyotoku
 
         static LuaFunctions()
         {
+
+        }
+
+        static void Insert()
+        {
             script = new Script();
-            foreach(Type type in types)
+            foreach (Type type in types)
                 UserData.RegisterType(type);
             AddGlobals();
             LuaMethods.Load();
