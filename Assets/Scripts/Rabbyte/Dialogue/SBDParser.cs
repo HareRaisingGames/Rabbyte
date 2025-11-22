@@ -187,6 +187,10 @@ namespace Rabbyte
                 betaDialogueSequence.foreground = dialogue.ContainsKey("foreground") ? dialogue["foreground"].Value<string>() : "";
                 betaDialogueSequence.minigame = dialogue.ContainsKey("minigame") ? dialogue["minigame"].Value<string>() : "";
 
+                betaDialogueSequence.onStart = dialogue.ContainsKey("onStartLua") ? dialogue["onStartLua"].Value<string>() : "";
+                betaDialogueSequence.onWord = dialogue.ContainsKey("onIntervalLua") ? dialogue["onIntervalLua"].Value<string>() : "";
+                betaDialogueSequence.onEnd = dialogue.ContainsKey("onEndLua") ? dialogue["onEndLua"].Value<string>() : "";
+
                 if (dialogue.ContainsKey("characters"))
                 {
                     JArray characterInfo = dialogue["characters"].Value<JArray>();
@@ -387,7 +391,26 @@ namespace Rabbyte
                     }
                     writer.WriteEndArray();
                 }
-                
+
+                //Add in Lua scripts
+                if (!string.IsNullOrEmpty(dialogue.onStart))
+                {
+                    writer.WritePropertyName("onStartLua");
+                    writer.WriteValue(dialogue.onStart);
+                }
+
+                if (!string.IsNullOrEmpty(dialogue.onWord))
+                {
+                    writer.WritePropertyName("onIntervalLua");
+                    writer.WriteValue(dialogue.onWord);
+                }
+
+                if (!string.IsNullOrEmpty(dialogue.onEnd))
+                {
+                    writer.WritePropertyName("onEndLua");
+                    writer.WriteValue(dialogue.onEnd);
+                }
+
                 //End of line object
                 writer.WriteEndObject();
             }
