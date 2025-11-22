@@ -59,11 +59,11 @@ public static partial class LuaMethods
     };
     static LuaMethods()
     {
-        LuaFunctions.AddGlobalList(globals);
+        
     }
 
     public static void Load()
     {
-
+        LuaFunctions.AddGlobalList(globals);
     }
 }
