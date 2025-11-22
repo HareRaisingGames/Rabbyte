@@ -34,12 +34,12 @@ namespace Rabbyte.Gyotoku
         /// <summary>
         /// Calls every time the line starts
         /// </summary>
-        public static void OnLineStart()
+        public static void OnLineStart(int n)
         {
             //Insert();
             string code = @$"
                 function onLineStart()
-                    {_file.curLine.onStart}
+                    {_file.GetLines()[n].onStart}
                 end
             ";
             //Debug.Log("Beginning");
@@ -51,12 +51,12 @@ namespace Rabbyte.Gyotoku
         /// <summary>
         /// Calls every time the line ends
         /// </summary>
-        public static void OnLineEnd()
+        public static void OnLineEnd(int n)
         {
             //Insert();
             string code = @$"
                 function onLineEnd()
-                    {_file.curLine.onEnd}
+                    {_file.GetLines()[n].onEnd}
                 end
             ";
             //Debug.Log("End");
@@ -70,12 +70,12 @@ namespace Rabbyte.Gyotoku
         /// Calls at a specific interval of the line
         /// </summary>
         /// <param name="i">The interval of the line</param>
-        public static void OnLineInterval(int i)
+        public static void OnLineInterval(int n, int i)
         {
             //Insert();
             string code = @$"
                 function onLineInterval(num)
-                    {_file.curLine.onWord}
+                    {_file.GetLines()[n].onWord}
                 end
             ";
             script.Globals["num"] = i;
