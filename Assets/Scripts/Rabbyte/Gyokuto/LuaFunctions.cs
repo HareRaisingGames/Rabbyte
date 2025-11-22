@@ -36,14 +36,12 @@ namespace Rabbyte.Gyotoku
         /// </summary>
         public static void OnLineStart()
         {
-            Insert();
+            //Insert();
             string code = @$"
                 function onLineStart()
                     {_file.onStart}
                 end
             ";
-            Debug.Log("Beginning");
-            Debug.Log(code);
             script.DoString(code);
             script.Call(script.Globals["onLineStart"]);
         }
@@ -53,14 +51,12 @@ namespace Rabbyte.Gyotoku
         /// </summary>
         public static void OnLineEnd()
         {
-            Insert();
+            //Insert();
             string code = @$"
                 function onLineEnd()
                     {_file.onEnd}
                 end
             ";
-            Debug.Log("End");
-            Debug.Log(code);
             script.DoString(code);
             script.Call(script.Globals["onLineEnd"]);
         }
@@ -71,7 +67,7 @@ namespace Rabbyte.Gyotoku
         /// <param name="i">The interval of the line</param>
         public static void OnLineInterval(int i)
         {
-            Insert();
+            //Insert();
             string code = @$"
                 function onLineInterval(num)
                     {_file.onWord}
