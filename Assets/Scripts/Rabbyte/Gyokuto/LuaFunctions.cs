@@ -42,8 +42,6 @@ namespace Rabbyte.Gyotoku
                     {_file.GetLines()[n].onStart}
                 end
             ";
-            //Debug.Log("Beginning");
-            //Debug.Log(code);
             script.DoString(code);
             script.Call(script.Globals["onLineStart"]);
         }
@@ -60,8 +58,6 @@ namespace Rabbyte.Gyotoku
                 end
             ";
             //Debug.Log("End");
-            Debug.Log(_file.onEnd);
-            Debug.Log(code);
             script.DoString(code);
             script.Call(script.Globals["onLineEnd"]);
         }
