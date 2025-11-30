@@ -193,8 +193,12 @@ namespace Rabbyte
         public bool AddCharacter(SBCFile data)
         {
             if (characters.ContainsKey(data.filename))
+            {
+                //Updates a character
+                characters.Remove(data.filename);
+                characters.Add(data.filename, data.expressions);
                 return false;
-
+            }
             characters.Add(data.filename, data.expressions);
             return true;
         }
