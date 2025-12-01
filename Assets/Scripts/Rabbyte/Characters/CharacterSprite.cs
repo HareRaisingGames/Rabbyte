@@ -87,8 +87,8 @@ namespace Rabbyte
             set
             {
                 this.rectTransform.eulerAngles = new Vector3(0, value ? 180 : 0, 0);
-                rectTransform.anchoredPosition = new Vector2(_position.x + offset[0] + _offset, _position.y + offset[1]);
                 _flipX = value;
+                rectTransform.anchoredPosition = new Vector2(_position.x + offset[0] + _offset, _position.y + offset[1]);
             }
         }
 
