@@ -19,7 +19,11 @@ namespace Rabbyte
             Vector2 defaultSize = new Vector2(image.sprite.texture.width, image.sprite.texture.height);
 
             float baseRatio = baseDimensions.x / baseDimensions.y;
-            float imageRatio = image.sprite.texture.width / image.sprite.texture.height;
+            float imageRatio = 0;
+            if(heightIsBigger)
+                imageRatio = image.sprite.texture.height / image.sprite.texture.height;
+            else
+                imageRatio = image.sprite.texture.width / image.sprite.texture.height;
 
             image.SetNativeSize();
             if (heightIsBigger)
