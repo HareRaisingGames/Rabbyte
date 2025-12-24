@@ -21,7 +21,7 @@ namespace Rabbyte
             float baseRatio = baseDimensions.x / baseDimensions.y;
             float imageRatio = 0;
             if(heightIsBigger)
-                imageRatio = image.sprite.texture.height / image.sprite.texture.height;
+                imageRatio = image.sprite.texture.height / image.sprite.texture.width;
             else
                 imageRatio = image.sprite.texture.width / image.sprite.texture.height;
 
