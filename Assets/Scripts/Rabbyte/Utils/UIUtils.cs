@@ -11,6 +11,8 @@ public static class UIUtils
         if (baseDimensions == default(Vector2))
             baseDimensions = new Vector2(800, 450);
 
+        if (image.sprite == null) return;
+
         bool heightIsBigger = image.sprite.texture.height >= image.sprite.texture.width;
         Vector2 defaultSize = new Vector2(image.sprite.texture.width, image.sprite.texture.height);
         image.SetNativeSize();
