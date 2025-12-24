@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace Rabbyte
 {
-    public static class UIUtils
+    public static class DialogueUtils
     {
         public static void SetImageFixedPosition(Image image, Vector2 baseDimensions = default(Vector2))
         {
