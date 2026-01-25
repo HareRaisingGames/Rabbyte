@@ -42,6 +42,11 @@ public static partial class LuaMethods
 
     }
 #endif
+
+    public static void Read(string message)
+    {
+        Debug.Log(message);
+    }
 }
 
 public static partial class LuaMethods
@@ -54,6 +59,7 @@ public static partial class LuaMethods
         //Reflect Properties
         { "GetProperty", (Func<string, dynamic>)GetProperty },
         { "SetProperty", (Action<string, dynamic>)SetProperty },
+        { "DebugLog", (Action<string>)Read},
         //CharacterProperties
         { "SetExpression", (Action<string, string>)SetExpressionToCharacter },
     };
