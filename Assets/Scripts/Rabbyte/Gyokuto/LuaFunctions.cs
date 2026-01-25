@@ -68,15 +68,14 @@ namespace Rabbyte.Gyotoku
         /// <param name="i">The interval of the line</param>
         public static void OnLineInterval(int n, int i)
         {
-            //Insert();
             string code = @$"
                 function onLineInterval(num)
                     {_file.GetLines()[n].onWord}
                 end
             ";
-            script.Globals["num"] = i;
             script.DoString(code);
-            script.Call(script.Globals["onLineInterval"]);
+            DynValue interval = script.Globals.Get("onLineInterval");
+            script.Call(interval, i);
         }
 
         ///<summary>
