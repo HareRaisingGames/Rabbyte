@@ -31,10 +31,29 @@ public static partial class LuaMethods
     };
 
 #if NET_4_6
+    static Type GetTypeAnywhere(string typeName)
+    {
+        // First, try the basic GetType which works for types in the current or mscorlib assembly
+        Type type = Type.GetType(typeName);
+        if (type != null) return type;
+
+        // If not found, search all loaded assemblies
+        var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+        foreach (var assembly in assemblies)
+        {
+            type = assembly.GetType(typeName);
+            if (type != null)
+            {
+                return type;
+            }
+        }
+
+        return null; // Type not found in any assembly
+    }
     static FieldInfo GetField(string property)
     {
-        Type type = Type.GetType(_typeName);
-        return type.GetField(property, BindingFlags.NonPublic | BindingFlags.Instance); ;
+        Type type = GetTypeAnywhere(_typeName);
+        return type.GetField(property, BindingFlags.NonPublic | BindingFlags.Instance);
     }
     /// <summary>
     /// Get the value of an object via string
