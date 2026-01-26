@@ -75,8 +75,8 @@ public static partial class LuaMethods
         { "Shake",  (Action<float, float, GameObject>)ShakeScreen },
         { "CameraShake",  (Action<float, float>)ShakeCamera },
         //Reflect Properties
-        //{ "GetProperty", (Func<string, dynamic>)GetProperty },
-        //{ "SetProperty", (Action<string, dynamic>)SetProperty },
+        { "GetProperty", (Func<string, dynamic>)GetProperty },
+        { "SetProperty", (Action<string, dynamic>)SetProperty },
         //Debug Properties
         { "DebugLog", (Action<object>)Read},
         { "DebugError", (Action<object>)Error},
