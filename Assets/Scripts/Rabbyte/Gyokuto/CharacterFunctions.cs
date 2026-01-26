@@ -10,6 +10,20 @@ public static partial class LuaMethods
         return Object.FindObjectsOfType(typeof(CharacterSprite)) as CharacterSprite[];
     }
 
+    public static string GetExpressionFromCharacter(string character)
+    {
+        CharacterSprite[] sprites = GetAllCharactersInScene();
+        foreach (CharacterSprite sprite in sprites)
+        {
+            if (sprite.charName == character)
+            {
+                return sprite.GetExpression();
+            }
+        }
+
+        return "";
+    }
+
     public static void SetExpressionToCharacter(string character, string expression)
     {
         CharacterSprite charat = null;

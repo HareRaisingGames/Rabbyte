@@ -30,6 +30,9 @@ public static partial class LuaMethods
     /// <returns></returns>
     public static dynamic GetProperty(string property)
     {
+        //Find the type object that this will be called out
+
+        //return (dynamic)field.GetValue();
         return null;
     }
     /// <summary>
@@ -73,8 +76,9 @@ public static partial class LuaMethods
         { "DebugLog", (Action<object>)Read},
         { "DebugError", (Action<object>)Error},
         { "DebugWarning", (Action<object>)Warning},
-        //CharacterProperties
+        //Character Properties
         { "SetExpression", (Action<string, string>)SetExpressionToCharacter },
+        { "GetExpression", (Func<string, string>)GetExpressionFromCharacter }
     };
     static LuaMethods()
     {

@@ -25,6 +25,7 @@ namespace Rabbyte
             }
         }
         public string charName => _character.filename;
+        public string GetExpression() => _expression;
         public string expression
         {
             set
