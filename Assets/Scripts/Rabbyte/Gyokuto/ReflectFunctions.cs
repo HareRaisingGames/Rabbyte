@@ -45,8 +45,8 @@ public static partial class LuaMethods
     {
         //Find the type object that this will be called out
         FieldInfo field = GetField(property);
-        //return (dynamic)field.GetValue();
-        return null;
+        return (dynamic)field.GetValue(_typeInstance);
+        //return null;
     }
     /// <summary>
     /// Sets the value of an object via string
