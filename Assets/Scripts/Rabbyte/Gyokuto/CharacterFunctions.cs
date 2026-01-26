@@ -9,6 +9,7 @@ public static partial class LuaMethods
     {
         return Object.FindObjectsOfType(typeof(CharacterSprite)) as CharacterSprite[];
     }
+
     public static void SetExpressionToCharacter(string character, string expression)
     {
         CharacterSprite charat = null;

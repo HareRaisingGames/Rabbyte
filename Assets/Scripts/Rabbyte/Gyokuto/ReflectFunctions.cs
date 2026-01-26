@@ -43,9 +43,19 @@ public static partial class LuaMethods
     }
 #endif
 
-    public static void Read(object message)
+    static void Read(object message)
     {
         Debug.Log(message);
+    }
+
+    static void Error(object message)
+    {
+        Debug.LogError(message);
+    }
+
+    static void Warning(object message)
+    {
+        Debug.LogWarning(message);
     }
 }
 
@@ -59,7 +69,10 @@ public static partial class LuaMethods
         //Reflect Properties
         { "GetProperty", (Func<string, dynamic>)GetProperty },
         { "SetProperty", (Action<string, dynamic>)SetProperty },
+        //Debug Properties
         { "DebugLog", (Action<object>)Read},
+        { "DebugError", (Action<object>)Error},
+        { "DebugWarning", (Action<object>)Warning},
         //CharacterProperties
         { "SetExpression", (Action<string, string>)SetExpressionToCharacter },
     };
@@ -72,7 +85,11 @@ public static partial class LuaMethods
     {
         LuaFunctions.AddGlobalList(globals);
     }
-
+    /// <summary>
+    /// Add a global via string and value
+    /// </summary>
+    /// <param name="name">The string tag</param>
+    /// <param name="dyn">The dynamic value</param>
     public static void AddGlobal(string name, dynamic dyn)
     {
         if (!globals.ContainsKey(name))
