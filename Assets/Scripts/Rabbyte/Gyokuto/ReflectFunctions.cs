@@ -8,12 +8,12 @@ using Rabbyte.Gyotoku;
 public static partial class LuaMethods
 {
     static string _typeName;
-    public static string typeName
+    static dynamic _typeInstance;
+    
+    public static void SetInstance(dynamic instance)
     {
-        set
-        {
-            _typeName = value;
-        }
+        _typeInstance = instance;
+        _typeName = _typeInstance.GetType().Name;
     }
     readonly static Dictionary<string, string> keyCodes = new Dictionary<string, string>()
     {
@@ -44,7 +44,7 @@ public static partial class LuaMethods
     public static dynamic GetProperty(string property)
     {
         //Find the type object that this will be called out
-        //FieldInfo field = GetField(property);
+        FieldInfo field = GetField(property);
         //return (dynamic)field.GetValue();
         return null;
     }
