@@ -34,7 +34,7 @@ public static partial class LuaMethods
     static FieldInfo GetField(string property)
     {
         Type type = Type.GetType(_typeName);
-        return null;
+        return type.GetField(property, BindingFlags.NonPublic | BindingFlags.Instance); ;
     }
     /// <summary>
     /// Get the value of an object via string
