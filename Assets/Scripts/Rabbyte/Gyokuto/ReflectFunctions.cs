@@ -7,6 +7,14 @@ using Rabbyte.Gyotoku;
 
 public static partial class LuaMethods
 {
+    static string _typeName;
+    public static string typeName
+    {
+        set
+        {
+            _typeName = value;
+        }
+    }
     readonly static Dictionary<string, string> keyCodes = new Dictionary<string, string>()
     {
         {"x", "transform.position.x"},
@@ -25,7 +33,7 @@ public static partial class LuaMethods
 #if NET_4_6
     static FieldInfo GetField(string property)
     {
-        
+        Type type = Type.GetType(_typeName);
         return null;
     }
     /// <summary>
