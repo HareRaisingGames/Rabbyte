@@ -65,6 +65,10 @@ public static partial class LuaMethods
         if(field != null)
             return field;
 
+        MethodInfo method = type.GetMethod(property, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+        if (method != null)
+            return method;
+
         PropertyInfo prop = type.GetProperty(property, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
         if (prop != null)
             return prop;
