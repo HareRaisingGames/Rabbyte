@@ -50,11 +50,53 @@ public static partial class LuaMethods
 
         return null; // Type not found in any assembly
     }
-    static FieldInfo GetField(string property)
+    /// <summary>
+    /// A technique on retrieving both the appropriate info and the outgoing instance
+    /// </summary>
+    /// <param name="property">The property name</param>
+    /// <param name="instance">The output instance - when the variable is about to be recieved, it'll look for that specific one</param>
+    /// <returns></returns>
+    static dynamic GetPropertyType(string property, out dynamic instance)
     {
         Type type = GetTypeAnywhere(_typeName);
-        return type.GetField(property, BindingFlags.NonPublic | BindingFlags.Instance);
+        instance = _typeInstance;
+
+        FieldInfo field = type.GetField(property, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+        if(field != null)
+            return field;
+
+        PropertyInfo prop = type.GetProperty(property, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+        if (prop != null)
+            return prop;
+
+        string[] propertyBreak = property.Split(".");
+        for(int i = 0; i < propertyBreak.Length; i++)
+        {
+            field = type.GetField(propertyBreak[i], BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+            prop = type.GetProperty(propertyBreak[i], BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+
+            if (field != null || prop != null)
+            {
+                if(field != null)
+                {
+                    type = field.FieldType;
+                    if (i >= propertyBreak.Length - 1) return field;
+                    instance = (dynamic)field.GetValue(instance);
+                }
+                else if(prop != null)
+                {
+                    type = prop.PropertyType;
+                    if (i >= propertyBreak.Length - 1) return prop;
+                    instance = (dynamic)prop.GetValue(instance);
+                }
+            }
+            else
+                break;
+        }
+
+        return null;
     }
+
     /// <summary>
     /// Get the value of an object via string
     /// </summary>
@@ -63,9 +105,19 @@ public static partial class LuaMethods
     public static dynamic GetProperty(string property)
     {
         //Find the type object that this will be called out
-        FieldInfo field = GetField(property);
-        return (dynamic)field.GetValue(_typeInstance);
-        //return null;
+        dynamic instance;
+        try
+        {
+            dynamic field = GetPropertyType(property, out instance);
+            return (dynamic)field.GetValue(instance);
+        }
+        catch(Exception ex)
+        {
+            Debug.LogError("The following property does not exist");
+            return null;
+        }
+
+
     }
     /// <summary>
     /// Sets the value of an object via string
@@ -74,7 +126,9 @@ public static partial class LuaMethods
     /// <param name="value">The new value</param>
     public static void SetProperty(string property, dynamic value)
     {
-
+        dynamic output;
+        dynamic field = GetPropertyType(property, out output);
+        field.SetValue(output, value);
     }
 #endif
 
