@@ -50,6 +50,27 @@ public static partial class LuaMethods
 
         return null; // Type not found in any assembly
     }
+
+    static Type GetTypeFromName(string typeName)
+    {
+        Type t = Type.GetType(typeName);
+        if (t != null) return t;
+
+        var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+        foreach (var assembly in assemblies)
+        {
+            foreach(Type type in assembly.GetTypes())
+            {
+                if (type.Name == typeName)
+                {
+                    return type;
+                }
+                    
+            }
+        }
+        return null;
+    }
+
     /// <summary>
     /// A technique on retrieving both the appropriate info and the outgoing instance
     /// </summary>
@@ -72,28 +93,57 @@ public static partial class LuaMethods
         string[] propertyBreak = property.Split(".");
         for(int i = 0; i < propertyBreak.Length; i++)
         {
-            field = type.GetField(propertyBreak[i], BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
-            prop = type.GetProperty(propertyBreak[i], BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
-
-            if (field != null || prop != null)
+            /*if (propertyBreak[i].Contains("GetComponent"))
             {
-                if(field != null)
+                string typeName = propertyBreak[i].Replace("GetComponent", "")
+                                                  .Replace("<", "")
+                                                  .Replace(">", "")
+                                                  .Replace("(", "")
+                                                  .Replace(")", "")
+                                                  .Replace("typeof", "");
+                Type t = GetTypeFromName(typeName);
+                if(t != null)
                 {
-                    type = field.FieldType;
-                    if (i >= propertyBreak.Length - 1) return field;
-                    instance = (dynamic)field.GetValue(instance);
-                }
-                else if(prop != null)
-                {
-                    type = prop.PropertyType;
-                    if (i >= propertyBreak.Length - 1) return prop;
-                    instance = (dynamic)prop.GetValue(instance);
+                    //Debug.Log(t);
+                    MethodInfo methodInfo = typeof(Component).GetMethod("GetComponent", new Type[] { });
+                    MethodInfo specificGetComponent = methodInfo.MakeGenericMethod(t);
+                    if (i >= propertyBreak.Length - 1) return specificGetComponent;
+                    Debug.Log(instance);
+                    //Component component = specificGetComponent.Invoke(instance.gameObject, null) as Component;
+                    Debug.Log("Hi!");
+                    //Debug.Log(specificGetComponent);
+                    //Debug.Log("Testing!");
+                    //Component component = instance.GetComponent(t);
+                    //if (i >= propertyBreak.Length - 1) return component;
+                    //instance = component;
+                    //Debug.Log(component != null);
                 }
             }
             else
-                break;
-        }
+            {*/
+                field = type.GetField(propertyBreak[i], BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+                prop = type.GetProperty(propertyBreak[i], BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
 
+                if (field != null || prop != null)
+                {
+                    if (field != null)
+                    {
+                        type = field.FieldType;
+                        if (i >= propertyBreak.Length - 1) return field;
+                        instance = (dynamic)field.GetValue(instance);
+                    }
+                    else if (prop != null)
+                    {
+                        type = prop.PropertyType;
+                        if (i >= propertyBreak.Length - 1) return prop;
+                        instance = (dynamic)prop.GetValue(instance);
+                    }
+                }
+                else
+                    break;
+            }
+        //}
+            
         return null;
     }
 
@@ -109,14 +159,17 @@ public static partial class LuaMethods
         try
         {
             dynamic field = GetPropertyType(property, out instance);
-            return (dynamic)field.GetValue(instance);
+            if (field is FieldInfo || field is PropertyInfo)
+                return (dynamic)field.GetValue(instance);
+            else if (field is MethodInfo)
+                return field.Invoke(instance, null);
         }
         catch(Exception ex)
         {
             Debug.LogError("The following property does not exist");
             return null;
         }
-
+        return null;
 
     }
     /// <summary>
@@ -127,8 +180,57 @@ public static partial class LuaMethods
     public static void SetProperty(string property, dynamic value)
     {
         dynamic output;
-        dynamic field = GetPropertyType(property, out output);
-        field.SetValue(output, value);
+        try
+        {
+            dynamic field = GetPropertyType(property, out output);
+
+            //Check if the object is a vector property
+            bool vector = property.EndsWith(".x") || property.EndsWith(".y") || property.EndsWith(".z");
+            if (vector)
+            {
+                string filtered = property.Remove(property.Length - 2);
+
+                dynamic tOutput;
+                dynamic tField = GetPropertyType(filtered, out tOutput);
+
+                //Grab the last two variables from the vector
+                string check = $"{property[property.Length - 2]}{property[property.Length - 1]}";
+
+            //Check if it uses FieldInfo or PropertyInfo
+            bool accepted = false;
+
+            if (tField is FieldInfo) 
+                accepted = tField.FieldType == typeof(Vector3) || tField.FieldType == typeof(Vector2);
+            else if (tField is PropertyInfo) 
+                accepted = tField.PropertyType == typeof(Vector3) || tField.PropertyType == typeof(Vector2);
+
+                if (accepted)
+                {
+                    switch (check)
+                    {
+                        case ".x":
+                            tField.SetValue(tOutput, new Vector3(value, GetProperty($"{filtered}.y"), GetProperty($"{filtered}.z")));
+                            break;
+                        case ".y":
+                            tField.SetValue(tOutput, new Vector3(GetProperty($"{filtered}.x"), value, GetProperty($"{filtered}.z")));
+                            break;
+                        case ".z":
+                            tField.SetValue(tOutput, new Vector3(GetProperty($"{filtered}.x"), GetProperty($"{filtered}.y"), value));
+                            break;
+                    }
+                }
+                else
+                    field.SetValue(output, value);
+            }
+            else
+                field.SetValue(output, value);
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError("Invalid casting or parameter does not exist");
+        }
+
+
     }
 #endif
 

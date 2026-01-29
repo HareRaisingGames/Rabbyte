@@ -1277,6 +1277,7 @@ MonoBehaviour:
   dropdown: {fileID: 1008458083}
   image: {fileID: 1548482422}
   charImage: {fileID: 586888691}
+  imageObject: {fileID: 1291450256}
   cube: {fileID: 1055866080}
 --- !u!1 &1155579893
 GameObject:

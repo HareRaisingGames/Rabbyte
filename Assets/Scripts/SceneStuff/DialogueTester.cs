@@ -18,8 +18,11 @@ public class DialogueTester : MonoBehaviour
     public Image image;
     public Image charImage;
     public SimpleSBDFile file = new();
+    public GameObject imageObject;
 
     public GameObject cube;
+
+    public Vector3 test;
 
     List<string> bgFileNames = new List<string>();
     // Start is called before the first frame update
@@ -29,6 +32,12 @@ public class DialogueTester : MonoBehaviour
         foreach (KeyValuePair<string, List<Emotion>> character in file.GetCharacters())
             Debug.Log(character);
 
+        LuaMethods.SetInstance(this);
+
+        //Debug.Log(LuaMethods.GetProperty("imageObject.transform.position"));
+        //LuaMethods.SetProperty("imageObject.transform.position.y", 1000);
+        //LuaMethods.SetProperty("test.x", 50);
+        //LuaMethods.SetProperty("imageObject.transform.position.x");
         //LuaFunctions.DoShake(cube);
 
         //LuaFunctions.ShakeScreen(2, 2, cube);
