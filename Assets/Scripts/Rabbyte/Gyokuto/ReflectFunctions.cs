@@ -260,6 +260,7 @@ public static partial class LuaMethods
         //Reflect Properties
         { "GetProperty", (Func<string, dynamic>)GetProperty },
         { "SetProperty", (Action<string, dynamic>)SetProperty },
+        { "GetColor", (Func<string, Color>)GetColorByString},
         //Debug Properties
         { "DebugLog", (Action<object>)Read},
         { "DebugError", (Action<object>)Error},
