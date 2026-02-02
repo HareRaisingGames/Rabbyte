@@ -158,9 +158,11 @@ namespace Rabbyte
         public StoryType type = StoryType.Main;
         public string fileName;
         public string displayName;
-        public string? description;
+        public string description;
 
         public AudioByte music = null;
+
+        public string onLoad;
 
         public SimpleSBDFile(bool load = false) : base()
         {

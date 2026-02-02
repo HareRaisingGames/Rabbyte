@@ -32,6 +32,20 @@ namespace Rabbyte.Gyotoku
         }
 
         /// <summary>
+        /// A function that is called once the entire scene is loaded
+        /// </summary>
+        public static void OnLoad()
+        {
+            string code = @$"
+                function onLoad()
+                    {_file.onLoad}
+                end
+            ";
+            script.DoString(code);
+            script.Call(script.Globals["onLoad"]);
+        }
+
+        /// <summary>
         /// Calls every time the line starts
         /// </summary>
         public static void OnLineStart(int n)

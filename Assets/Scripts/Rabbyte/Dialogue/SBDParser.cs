@@ -119,7 +119,10 @@ namespace Rabbyte
 
             file.volume = obj.ContainsKey("volume") ? obj["volume"].Value<int>() : 0;
             file.chapter = obj.ContainsKey("chapter") ? obj["chapter"].Value<int>() : 0;
-            if(obj.ContainsKey("music"))
+
+            file.onLoad = obj.ContainsKey("onLoad") ? obj["onLoad"].Value<string>() : "";
+
+            if (obj.ContainsKey("music"))
             {
                 JToken musicTok = obj["music"].Value<JToken>();
                 JObject musicObj = JObject.Load(musicTok.CreateReader());
@@ -304,6 +307,12 @@ namespace Rabbyte
                     writer.WritePropertyName("type");
                     writer.WriteValue(value.music.type);
                 writer.WriteEndObject();
+            }
+
+            if (value.onLoad != "" && value.onLoad != null)
+            {
+                writer.WritePropertyName("onLoad");
+                writer.WriteValue(value.onLoad);
             }
 
             writer.WritePropertyName("lines");
