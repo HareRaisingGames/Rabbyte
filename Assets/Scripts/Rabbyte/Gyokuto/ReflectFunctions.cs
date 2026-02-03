@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Reflection;
 using System;
+using System.Linq;
 using Rabbyte.Gyotoku;
 
 public static partial class LuaMethods
@@ -20,133 +21,18 @@ public static partial class LuaMethods
         {"x", "transform.position.x"},
         {"y", "transform.position.y" },
         {"z", "transform.poistion.z" },
+        {"angle", "transform.eulerAngles.z" },
         {"alpha", "color.a" }
     };
 
     readonly static Dictionary<string, string> altKeyCodes = new Dictionary<string, string>()
     {
-        {"x", "GetComponent<RectTransform>().anchoredPosition.x"},
-        {"y", "GetComponent<RectTransform>().anchoredPosition.y" },
+        {"x", "transform.anchoredPosition.x"},
+        {"y", "transform.anchoredPosition.y" },
         {"alpha", "color.a" }
     };
 
 #if NET_4_6
-    static Type GetTypeAnywhere(string typeName)
-    {
-        // First, try the basic GetType which works for types in the current or mscorlib assembly
-        Type type = Type.GetType(typeName);
-        if (type != null) return type;
-
-        // If not found, search all loaded assemblies
-        var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-        foreach (var assembly in assemblies)
-        {
-            type = assembly.GetType(typeName);
-            if (type != null)
-            {
-                return type;
-            }
-        }
-
-        return null; // Type not found in any assembly
-    }
-
-    static Type GetTypeFromName(string typeName)
-    {
-        Type t = Type.GetType(typeName);
-        if (t != null) return t;
-
-        var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-        foreach (var assembly in assemblies)
-        {
-            foreach(Type type in assembly.GetTypes())
-            {
-                if (type.Name == typeName)
-                {
-                    return type;
-                }
-                    
-            }
-        }
-        return null;
-    }
-
-    /// <summary>
-    /// A technique on retrieving both the appropriate info and the outgoing instance
-    /// </summary>
-    /// <param name="property">The property name</param>
-    /// <param name="instance">The output instance - when the variable is about to be recieved, it'll look for that specific one</param>
-    /// <returns></returns>
-    static dynamic GetPropertyType(string property, out dynamic instance)
-    {
-        Type type = GetTypeAnywhere(_typeName);
-        instance = _typeInstance;
-
-        FieldInfo field = type.GetField(property, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
-        if(field != null)
-            return field;
-
-        PropertyInfo prop = type.GetProperty(property, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
-        if (prop != null)
-            return prop;
-
-        string[] propertyBreak = property.Split(".");
-        for(int i = 0; i < propertyBreak.Length; i++)
-        {
-            /*if (propertyBreak[i].Contains("GetComponent"))
-            {
-                string typeName = propertyBreak[i].Replace("GetComponent", "")
-                                                  .Replace("<", "")
-                                                  .Replace(">", "")
-                                                  .Replace("(", "")
-                                                  .Replace(")", "")
-                                                  .Replace("typeof", "");
-                Type t = GetTypeFromName(typeName);
-                if(t != null)
-                {
-                    //Debug.Log(t);
-                    MethodInfo methodInfo = typeof(Component).GetMethod("GetComponent", new Type[] { });
-                    MethodInfo specificGetComponent = methodInfo.MakeGenericMethod(t);
-                    if (i >= propertyBreak.Length - 1) return specificGetComponent;
-                    Debug.Log(instance);
-                    //Component component = specificGetComponent.Invoke(instance.gameObject, null) as Component;
-                    Debug.Log("Hi!");
-                    //Debug.Log(specificGetComponent);
-                    //Debug.Log("Testing!");
-                    //Component component = instance.GetComponent(t);
-                    //if (i >= propertyBreak.Length - 1) return component;
-                    //instance = component;
-                    //Debug.Log(component != null);
-                }
-            }
-            else
-            {*/
-                field = type.GetField(propertyBreak[i], BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
-                prop = type.GetProperty(propertyBreak[i], BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
-
-                if (field != null || prop != null)
-                {
-                    if (field != null)
-                    {
-                        type = field.FieldType;
-                        if (i >= propertyBreak.Length - 1) return field;
-                        instance = (dynamic)field.GetValue(instance);
-                    }
-                    else if (prop != null)
-                    {
-                        type = prop.PropertyType;
-                        if (i >= propertyBreak.Length - 1) return prop;
-                        instance = (dynamic)prop.GetValue(instance);
-                    }
-                }
-                else
-                    break;
-            }
-        //}
-            
-        return null;
-    }
-
     /// <summary>
     /// Get the value of an object via string
     /// </summary>
@@ -166,7 +52,7 @@ public static partial class LuaMethods
         }
         catch(Exception ex)
         {
-            Debug.LogError("The following property does not exist");
+            Debug.LogError($"The following property does not exist \n {ex}");
             return null;
         }
         return null;
@@ -232,6 +118,154 @@ public static partial class LuaMethods
 
 
     }
+
+    #region Utils
+    static List<Type> GetAllInheritedTypes(Type parent)
+    {
+        // Scan the current executing assembly for types
+        return AppDomain.CurrentDomain.GetAssemblies().SelectMany(a => a.GetTypes())
+            .Where(type => type.IsSubclassOf(parent)).ToList();
+    }
+
+    static Type GetTypeAnywhere(string typeName)
+    {
+        // First, try the basic GetType which works for types in the current or mscorlib assembly
+        Type type = Type.GetType(typeName);
+        if (type != null) return type;
+
+        // If not found, search all loaded assemblies
+        var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+        foreach (var assembly in assemblies)
+        {
+            type = assembly.GetType(typeName);
+            if (type != null)
+            {
+                return type;
+            }
+        }
+
+        return null; // Type not found in any assembly
+    }
+
+    static Type GetTypeFromName(string typeName)
+    {
+        Type t = Type.GetType(typeName);
+        if (t != null) return t;
+
+        var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+        foreach (var assembly in assemblies)
+        {
+            foreach (Type type in assembly.GetTypes())
+            {
+                if (type.Name == typeName)
+                {
+                    return type;
+                }
+
+            }
+        }
+        return null;
+    }
+    /// <summary>
+    /// A technique on retrieving both the appropriate info and setting the outgoing instance
+    /// </summary>
+    /// <param name="property">The property name</param>
+    /// <param name="instance">The output instance - when the variable is about to be recieved, it'll look for that specific one</param>
+    /// <returns></returns>
+    static dynamic GetPropertyType(string property, out dynamic instance)
+    {
+        Type type = GetTypeAnywhere(_typeName);
+        instance = _typeInstance;
+
+        FieldInfo field = type.GetField(property, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+        if (field != null)
+            return field;
+
+        PropertyInfo prop = type.GetProperty(property, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+        if (prop != null)
+            return prop;
+
+        string[] propertyBreak = property.Split(".");
+        for (int i = 0; i < propertyBreak.Length; i++)
+        {
+/*           if (propertyBreak[i].Contains("GetComponent"))
+{
+    string typeName = propertyBreak[i].Replace("GetComponent", "")
+                                      .Replace("<", "")
+                                      .Replace(">", "")
+                                      .Replace("(", "")
+                                      .Replace(")", "")
+                                      .Replace("typeof", "");
+    Type t = GetTypeFromName(typeName);
+    if(t != null)
+    {
+        //Debug.Log(t);
+        //MethodInfo methodInfo = typeof(Component).GetMethod("GetComponent", new Type[] { typeof(Type) });
+        MethodInfo methodInfo = typeof(Component).GetMethod("GetComponent", new Type[] { });
+        MethodInfo specificGetComponent = methodInfo.MakeGenericMethod(t);
+                    //Debug.Log(specificGetComponent);
+                    //object component = methodInfo.Invoke(instance.gameObject, new object[] { t });
+                    Debug.Log(instance.GetType());
+        //object component = specificGetComponent?.Invoke(instance.gameObject, null);
+        Debug.Log("Hi!");
+                    //Debug.Log(specificGetComponent);
+                    Debug.Log(instance.GetComponent(t));
+                    //Debug.Log(instance.gameObject.GetComponent(t));
+        //Component component = instance.gameObject.TryGetComponent(t, out instance);
+        //if (i >= propertyBreak.Length - 1) return component;
+        //instance = component;
+        //Debug.Log(component != null);
+        //if (i >= propertyBreak.Length - 1) return specificGetComponent;
+    }
+}
+else
+{*/
+            field = type.GetField(propertyBreak[i], BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+            prop = type.GetProperty(propertyBreak[i], BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+
+            if (field != null || prop != null)
+            {
+                if (field != null)
+                {
+                    type = field.FieldType;
+                    if (i >= propertyBreak.Length - 1) return field;
+                    instance = (dynamic)field.GetValue(instance);
+
+                    /* In the instance of a type like "RectTransform" that is an inhertited type of "Transform."
+                     * This function will check if it field/property's true type is inhertited
+                    */
+                    foreach (Type t in GetAllInheritedTypes(type))
+                    {
+                        if (instance.GetType() == t)
+                        {
+                            type = t;
+                            break;
+                        }
+                    }
+                }
+                else if (prop != null)
+                {
+                    type = prop.PropertyType;
+                    if (i >= propertyBreak.Length - 1) return prop;
+                    instance = (dynamic)prop.GetValue(instance);
+
+                    foreach (Type t in GetAllInheritedTypes(type))
+                    {
+                        if (instance.GetType() == t)
+                        {
+                            type = t;
+                            break;
+                        }
+                    }
+                }
+            }
+            else
+                break;
+        }
+//}
+        return null;
+    }
+    #endregion
 #endif
 
     static void Read(object message)
@@ -260,6 +294,7 @@ public static partial class LuaMethods
         //Reflect Properties
         { "GetProperty", (Func<string, dynamic>)GetProperty },
         { "SetProperty", (Action<string, dynamic>)SetProperty },
+        { "AddToLua", (Action<string, dynamic>)AddGlobal },
         { "GetColor", (Func<string, Color>)GetColorByString},
         //Debug Properties
         { "DebugLog", (Action<object>)Read},
