@@ -34,6 +34,7 @@ public class DialogueTester : MonoBehaviour
 
         LuaMethods.SetInstance(this);
 
+        Debug.Log(LuaMethods.GetProperty("imageObject.GetComponent<Image>().color"));
         //LuaMethods.SetProperty("imageObject.transform.position.y", 1000);
         //LuaMethods.SetProperty("test.x", 50);
         //LuaMethods.SetProperty("imageObject.transform.position.x");
