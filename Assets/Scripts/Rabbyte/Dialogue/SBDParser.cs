@@ -189,7 +189,7 @@ namespace Rabbyte
                 betaDialogueSequence.background = dialogue.ContainsKey("background") ? dialogue["background"].Value<string>() : "";
                 betaDialogueSequence.foreground = dialogue.ContainsKey("foreground") ? dialogue["foreground"].Value<string>() : "";
                 betaDialogueSequence.minigame = dialogue.ContainsKey("minigame") ? dialogue["minigame"].Value<string>() : "";
-
+                betaDialogueSequence.minigameComponent = dialogue.ContainsKey("minigameComponent") ? dialogue["minigameComponent"].Value<string>() : "";
                 betaDialogueSequence.onStart = dialogue.ContainsKey("onStartLua") ? dialogue["onStartLua"].Value<string>() : "";
                 betaDialogueSequence.onWord = dialogue.ContainsKey("onIntervalLua") ? dialogue["onIntervalLua"].Value<string>() : "";
                 betaDialogueSequence.onEnd = dialogue.ContainsKey("onEndLua") ? dialogue["onEndLua"].Value<string>() : "";
@@ -364,6 +364,12 @@ namespace Rabbyte
                 {
                     writer.WritePropertyName("minigame");
                     writer.WriteValue(dialogue.minigame);
+                }
+
+                if(!string.IsNullOrEmpty(dialogue.minigameComponent))
+                {
+                    writer.WritePropertyName("minigameComponent");
+                    writer.WriteValue(dialogue.minigameComponent);
                 }
 
                 writer.WritePropertyName("autoSkip");

@@ -611,6 +611,7 @@ namespace Rabbyte
         public int id;
 
         public string minigame = "";
+        public string minigameComponent = "";
         
         //Backgrounds
         public string background;
