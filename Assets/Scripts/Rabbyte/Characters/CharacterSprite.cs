@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 namespace Rabbyte
 {
@@ -90,6 +91,23 @@ namespace Rabbyte
                 this.rectTransform.eulerAngles = new Vector3(0, value ? 180 : 0, 0);
                 _flipX = value;
                 rectTransform.anchoredPosition = new Vector2(_position.x + offset[0] + _offset, _position.y + offset[1]);
+            }
+        }
+
+        private Action<CharacterSprite, bool> _speakingAction;
+        public Action<CharacterSprite, bool> speakingAction
+        {
+            set
+            {
+                _speakingAction = value;
+            }
+        }
+
+        public bool isSpeaking
+        {
+            set
+            {
+                _speakingAction!.Invoke(this, value);
             }
         }
 
