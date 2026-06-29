@@ -131,15 +131,18 @@ namespace Rabbyte
                 file.music = music;
             }
 
-            JToken sfxs = obj["sfxs"].Value<JToken>();
-            JObject soundEffects = JObject.Load(sfxs.CreateReader());
-            foreach (JProperty property in soundEffects.Properties())
+            if(obj.ContainsKey("sfxs"))
             {
-                JToken sfxToken = obj[property.Name].Value<JToken>();
-                JObject sfxObject = JObject.Load(sfxToken.CreateReader());
+                JToken sfxs = obj["sfxs"].Value<JToken>();
+                JObject soundEffects = JObject.Load(sfxs.CreateReader());
+                foreach (JProperty property in soundEffects.Properties())
+                {
+                    JToken sfxToken = obj[property.Name].Value<JToken>();
+                    JObject sfxObject = JObject.Load(sfxToken.CreateReader());
 
-                AudioByte sfx = new AudioByte(Converters.StringToBytes(sfxObject["data"].Value<string>()), sfxObject["type"].Value<string>(), sfxObject["name"].Value<string>());
-                file.AddSoundEffect(property.Name, sfx);
+                    AudioByte sfx = new AudioByte(Converters.StringToBytes(sfxObject["data"].Value<string>()), sfxObject["type"].Value<string>(), sfxObject["name"].Value<string>());
+                    file.AddSoundEffect(property.Name, sfx);
+                }
             }
             //file.music = obj.ContainsKey("music") ? Converters.StringToBytes(obj["music"].Value<string>()) : null;
 
