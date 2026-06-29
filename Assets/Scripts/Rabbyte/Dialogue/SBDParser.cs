@@ -130,6 +130,17 @@ namespace Rabbyte
                 AudioByte music = new AudioByte(Converters.StringToBytes(musicObj["data"].Value<string>()), musicObj["type"].Value<string>(), musicObj["name"].Value<string>());
                 file.music = music;
             }
+
+            JToken sfxs = obj["sfxs"].Value<JToken>();
+            JObject soundEffects = JObject.Load(sfxs.CreateReader());
+            foreach (JProperty property in soundEffects.Properties())
+            {
+                JToken sfxToken = obj[property.Name].Value<JToken>();
+                JObject sfxObject = JObject.Load(sfxToken.CreateReader());
+
+                AudioByte sfx = new AudioByte(Converters.StringToBytes(sfxObject["data"].Value<string>()), sfxObject["type"].Value<string>(), sfxObject["name"].Value<string>());
+                file.AddSoundEffect(property.Name, sfx);
+            }
             //file.music = obj.ContainsKey("music") ? Converters.StringToBytes(obj["music"].Value<string>()) : null;
 
             string type = obj["type"].Value<string>();
@@ -308,6 +319,22 @@ namespace Rabbyte
                     writer.WriteValue(value.music.type);
                 writer.WriteEndObject();
             }
+
+            writer.WritePropertyName("sfxs");
+            writer.WriteStartObject();
+            foreach (KeyValuePair<string, AudioByte> sfx in value.GetSoundEffects())
+            {
+                writer.WritePropertyName(sfx.Key);
+                writer.WriteStartObject();
+                    writer.WritePropertyName("name");
+                    writer.WriteValue(sfx.Value.name);
+                    writer.WritePropertyName("data");
+                    writer.WriteValue(sfx.Value.data);
+                    writer.WritePropertyName("type");
+                    writer.WriteValue(sfx.Value.type);
+                writer.WriteEndObject();
+            }
+            writer.WriteEndObject();
 
             if (value.onLoad != "" && value.onLoad != null)
             {

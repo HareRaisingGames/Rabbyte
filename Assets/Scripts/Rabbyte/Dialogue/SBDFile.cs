@@ -279,6 +279,23 @@ namespace Rabbyte
         }
         #endregion
 
+        public Dictionary<string, AudioByte> GetSoundEffects() => soundEffects;
+
+        public bool AddSoundEffect(string name, AudioByte data)
+        {
+            if (soundEffects.ContainsKey(name))
+                return false;
+
+            soundEffects.Add(name, data);
+            return true;
+        }
+
+        public void RemoveSoundEffect(string name)
+        {
+            if (soundEffects.ContainsKey(name))
+                soundEffects.Remove(name);
+        }
+
         #region Dialogue Data
 
         protected List<BetaDialogueSequence> lines = new List<BetaDialogueSequence>();
