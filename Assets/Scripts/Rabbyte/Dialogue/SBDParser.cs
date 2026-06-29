@@ -137,7 +137,7 @@ namespace Rabbyte
                 JObject soundEffects = JObject.Load(sfxs.CreateReader());
                 foreach (JProperty property in soundEffects.Properties())
                 {
-                    JToken sfxToken = obj[property.Name].Value<JToken>();
+                    JToken sfxToken = sfxs[property.Name].Value<JToken>();
                     JObject sfxObject = JObject.Load(sfxToken.CreateReader());
 
                     AudioByte sfx = new AudioByte(Converters.StringToBytes(sfxObject["data"].Value<string>()), sfxObject["type"].Value<string>(), sfxObject["name"].Value<string>());
